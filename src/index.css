@@ -1,0 +1,22 @@
+@import '@fontsource/inter/400.css';
+@import '@fontsource/inter/500.css';
+@import '@fontsource/inter/600.css';
+@import '@fontsource/inter/700.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply antialiased;
+  }
+}
+
+.theme-toggle {
+  @apply transition-transform duration-200;
+}
+
+.dark .theme-toggle {
+  @apply rotate-180;
+}
