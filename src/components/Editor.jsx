@@ -16,7 +16,7 @@ export default function Editor() {
 {`class Solution {
     public int countGoodNumbers(long n) {
         // Your solution here
-        return 0;
+        return 0; 
     }
 }`}
         </pre>

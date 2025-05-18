@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, Filter, Circle } from 'lucide-react';
+import Header from '../components/Header';
 
 const problems = [
-  { id: 1922, title: 'Count Good Numbers', difficulty: 'Medium', completed: false, tags: ['Math', 'Recursion'] },
   { id: 1, title: 'Two Sum', difficulty: 'Easy', completed: true, tags: ['Array', 'Hash Table'] },
   { id: 2, title: 'Add Two Numbers', difficulty: 'Medium', completed: false, tags: ['Linked List', 'Math'] },
   { id: 3, title: 'Longest Substring', difficulty: 'Medium', completed: false, tags: ['String', 'Sliding Window'] },
   { id: 4, title: 'Binary Tree Traversal', difficulty: 'Hard', completed: false, tags: ['Tree', 'DFS'] },
+  { id: 5, title: 'Count Good Numbers', difficulty: 'Medium', completed: false, tags: ['Math', 'Recursion'] },
 ];
 
 const difficultyColors = {
@@ -28,6 +29,8 @@ export default function ProblemList() {
   });
 
   return (
+    <>
+    <Header/>
     <div className="min-h-screen bg-white dark:bg-[#1e1e1e] font-inter">
       <div className="max-w-5xl mx-auto px-4 py-8">
         <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-8">Problem List</h1>
@@ -42,7 +45,7 @@ export default function ProblemList() {
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full pl-10 pr-4 py-2 bg-gray-100 dark:bg-gray-800 rounded-md text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
+                />
             </div>
           </div>
           
@@ -51,14 +54,14 @@ export default function ProblemList() {
             <div className="flex gap-2">
               {['All', 'Easy', 'Medium', 'Hard'].map((difficulty) => (
                 <button
-                  key={difficulty}
-                  onClick={() => setSelectedDifficulty(difficulty)}
-                  className={`px-4 py-2 rounded-md text-sm ${
-                    selectedDifficulty === difficulty
-                      ? 'bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300'
+                key={difficulty}
+                onClick={() => setSelectedDifficulty(difficulty)}
+                className={`px-4 py-2 rounded-md text-sm ${
+                  selectedDifficulty === difficulty
+                  ? 'bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300'
                       : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300'
-                  }`}
-                >
+                    }`}
+                    >
                   {difficulty}
                 </button>
               ))}
@@ -73,7 +76,7 @@ export default function ProblemList() {
                 key={problem.id}
                 onClick={() => navigate(`/problem/${problem.id}`)}
                 className="p-4 hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer transition-colors"
-              >
+                >
                 <div className="flex items-center gap-4">
                   <Circle className={`w-2 h-2 ${difficultyColors[problem.difficulty]}`} />
                   <div className="flex-1">
@@ -97,7 +100,7 @@ export default function ProblemList() {
                     </div>
                   </div>
                   {problem.completed && (
-                    <span className="text-green-500">✓</span>
+                    <Circle className="text-green-500 w-3 h-3 fill-green-500"></Circle>
                   )}
                 </div>
               </div>
@@ -106,5 +109,6 @@ export default function ProblemList() {
         </div>
       </div>
     </div>
+    </>
   );
 }
