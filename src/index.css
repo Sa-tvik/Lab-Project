@@ -20,3 +20,29 @@
 .dark .theme-toggle {
   @apply rotate-180;
 }
+
+.split {
+    display: flex;
+    flex-direction: row;
+}
+
+
+.gutter {
+    background-color: gray;
+    background-repeat: no-repeat;
+    background-position: 50%;
+}
+.dark .gutter{
+  background-color: #000000;
+}
+.gutter:hover {
+	background-color: #0a84ff;
+}
+
+.gutter.gutter-horizontal {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==');
+    cursor: col-resize;
+}
+.cm-focused{
+  outline: none;
+}

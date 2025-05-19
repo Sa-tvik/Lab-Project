@@ -9,7 +9,7 @@ export default function Header() {
   const location = useLocation()
 
   return (
-    <div className="h-12 bg-white dark:bg-[#1e1e1e] text-gray-900 dark:text-white flex items-center px-4 border-b border-gray-200 dark:border-gray-700">
+    <div className="h-12 bg-white dark:bg-[#1e1e1e] text-gray-900 dark:text-white flex items-center px-4 py-5 pt-5 border-b border-gray-200 dark:border-gray-700">
       <div className="flex-none">
         <Logo />
       </div>
@@ -35,13 +35,6 @@ export default function Header() {
           <span className="text-sm font-mono">00:00:00</span>
         </div>
         
-        <button
-          onClick={toggleTheme}
-          className="p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-          aria-label="Toggle theme"
-        >
-          <Sun className="w-4 h-4 theme-toggle text-gray-600 dark:text-gray-400" />
-        </button>
         <button className="p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
           <Settings className="w-4 h-4 text-gray-600 dark:text-gray-400" />
         </button>

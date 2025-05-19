@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const ThemeContext = createContext({
   darkMode: true,
@@ -9,9 +9,14 @@ export function ThemeProvider({ children }) {
   const [darkMode, setDarkMode] = useState(true);
 
   const toggleTheme = () => {
-    setDarkMode(!darkMode);
-    document.documentElement.classList.toggle('dark', !darkMode);
+    const newMode = !darkMode;
+    setDarkMode(newMode);
+    document.documentElement.classList.toggle('dark', newMode);
   };
+
+  useEffect(() => {
+    document.documentElement.classList.toggle('dark', darkMode);
+  }, []); // Only on initial mount
 
   return (
     <ThemeContext.Provider value={{ darkMode, toggleTheme }}>
