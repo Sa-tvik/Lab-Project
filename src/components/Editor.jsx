@@ -1,10 +1,18 @@
 import React from 'react';
+import { useParams } from 'react-router-dom';
 import Split from 'react-split'
 import { vscodeDark } from '@uiw/codemirror-theme-vscode';
 import { javascript } from '@codemirror/lang-javascript';
+// import { java } from '@codemirror/lang-java';
+// import { cpp } from '@codemirror/lang-cpp';
+// import { python } from '@codemirror/lang-javascript';
 import CodeMirror from '@uiw/react-codemirror';
+import problems from '../utils/problem';
 
 export default function Editor() {
+  const { id } = useParams();
+  const problem = problems.find(p => p.id === parseInt(id));
+  
   return (
     <div className="flex flex-col h-full bg-white dark:bg-[#1e1e1e] overflow-y-auto">
       <div className="flex items-center gap-2 p-3 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
@@ -14,7 +22,7 @@ export default function Editor() {
           <option>JavaScript</option>
         </select>
       </div>
-      <Split className='h-[calc(100vh-94px)]' direction='vertical' sizes={[60,40]} minSize={60}>
+      <Split className='h-[calc(100vh-94px)]' direction='vertical' sizes={[50,50]} minSize={60}>
         <div className="w-full overflow-auto">
           <CodeMirror
             value='const a = 1;'
@@ -64,12 +72,12 @@ export default function Editor() {
           </div>
           <div className='font-normal'>
             <p className='text-sm font-mono mt-4 text-white'>nums = </p>
-            <div className='w-full cursor-text rounded-lg border px-3 py-[10px] bg-gray-800 border-transparent text-white mt-2'>
+            <div className=' font-mono w-full cursor-text rounded-lg border px-3 py-[10px] bg-gray-800 border-transparent text-white mt-2'>
               [2,7,11,15]
             </div>
-            <p className='text-sm font-mono mt-4 text-white'>target =</p>
-            <div className='w-full cursor-text rounded-lg border px-3 py-[10px] bg-gray-800 border-transparent text-white mt-2'>
-              target: 9
+            <p className=' font-mono text-sm mt-4 text-white'>target =</p>
+            <div className='font-mono w-full cursor-text rounded-lg border px-3 py-[10px] bg-gray-800 border-transparent text-white mt-2'>
+              9
             </div>
           </div>
         </div>

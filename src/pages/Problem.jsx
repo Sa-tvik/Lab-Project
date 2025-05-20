@@ -1,20 +1,27 @@
-import { useParams } from 'react-router-dom';
+import React from 'react';
+import Header from '../components/Header';
+import Editor from '../components/Editor';
+import Split from 'react-split'
+import "../index.css"
+import ProblemDescription from '../components/ProblemDescription';
 
-export default function Problem() {
-  const { id } = useParams();
-  const problem = problemList.find((p) => p.id === parseInt(id)); 
-
+function Problem() {
   return (
-    <div className="h-screen flex flex-col bg-white dark:bg-[#1e1e1e] font-inter">
+    <div className="h-screen bg-white dark:bg-[#1e1e1e] font-inter">
       <Header />
-      <Split className="split" minSize={0}>
-        <div className="h-[40vh] md:h-auto md:w-1/2 border-b md:border-b-0 md:border-r border-gray-200 dark:border-gray-800">
-          <ProblemDescription problem={problem} />
-        </div>
-        <div className="flex-1 h-[60vh] md:h-auto">
-          <Editor problem={problem} />
-        </div>
-      </Split>
+          <Split className='split' minSize={0}>
+            <div className="h-full md:w-1/2 border-b md:border-b-0 md:border-r border-gray-200 dark:border-gray-800 overflow-hidden">
+              <div className="h-full overflow-y-auto">
+                <ProblemDescription />
+              </div>
+            </div>
+            <div className="flex-1 h-full">
+              <Editor />
+            </div>
+          </Split>
+      
     </div>
   );
 }
+
+export default Problem;
