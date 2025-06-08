@@ -1,8 +1,8 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import { Timer, Settings, Sun, Play, Send } from 'lucide-react';
-import { useTheme } from '../context/ThemeContext';
+import { Settings} from 'lucide-react';
 import Logo from './Logo';
+import Timer from './Timer';
 
 export default function Header() {
   const location = useLocation()
@@ -16,24 +16,19 @@ export default function Header() {
       <div className="flex-1 flex justify-center">
       {location.pathname.startsWith('/problem') && (
         <div className="flex items-center gap-3">
-          <button className="flex items-center gap-1.5 px-3 py-1.5 bg-leetcode-button-primary hover:bg-leetcode-button-hover text-white rounded-md transition-colors text-sm">
-            <Play className="w-4 h-4" />
+          <button className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors text-sm">
             Run
           </button>
-          <button className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors text-sm">
-            <Send className="w-4 h-4" />
+          <button className="flex items-center gap-1.5 px-3 py-1.5 bg-leetcode-button-primary hover:bg-leetcode-button-hover text-white rounded-lg transition-colors text-sm">
             Submit
           </button>
         </div>
       )}
       </div>
 
-      <div className="flex-none flex items-center gap-4">
+      <div className="flex-none flex items-center">
       {location.pathname.startsWith('/problem') && (
-        <div className="flex items-center gap-2 bg-gray-100 dark:bg-gray-800 px-3 py-1.5 rounded-md">
-          <Timer className="w-4 h-4 text-yellow-500" />
-          <span className="text-sm font-mono">00:00:00</span>
-        </div>
+        <Timer/>
       )}
         
         <button className="p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">

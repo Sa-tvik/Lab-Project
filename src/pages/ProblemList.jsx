@@ -2,23 +2,13 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Circle } from 'lucide-react';
 import Header from '../components/Header';
-
-const problems = [
-  { id: 1, title: 'Iterative Binary Search', completed: false, tags: ['Search', 'Iterative'] },
-  { id: 2, title: 'Recursive Binary Search', completed: false, tags: ['Search', 'Recursion'] },
-  { id: 3, title: 'Bubble Sort', completed: false, tags: ['Sorting'] },
-  { id: 4, title: 'Insertion Sort', completed: false, tags: ['Sorting'] },
-  { id: 5, title: 'Selection Sort', completed: false, tags: ['Sorting'] },
-  { id: 6, title: 'Find Maximum and Minimum', completed: false, tags: ['Array'] },
-  { id: 7, title: 'Merge Sort', completed: false, tags: ['Sorting', 'Divide and Conquer'] },
-  { id: 8, title: 'Quick Sort', completed: false, tags: ['Sorting', 'Divide and Conquer'] },
-  { id: 9, title: 'Breadth First Search', completed: false, tags: ['Graph', 'BFS'] },
-  { id: 10, title: 'Depth First Search', completed: false, tags: ['Graph', 'DFS'] }
-];
+import problems from '../utils/problem';
 
 export default function ProblemList() {
   const navigate = useNavigate();
+  console.log('problems:', problems);
 
+  
   return (
     <div className="h-screen flex flex-col bg-white dark:bg-[#1e1e1e] font-inter">
       <Header />

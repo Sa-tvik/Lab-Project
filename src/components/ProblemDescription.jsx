@@ -2,14 +2,31 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import problems from '../utils/problem';
 
-
 export default function ProblemDescription() {
   const { id } = useParams();
   const problem = problems.find(p => p.id === parseInt(id));
 
-  function languageMap(){
-    startercode
+  if (!problem) return <div className="p-4 text-white">Problem not found</div>;
+
+  function renderInputInline(input) {
+    if (typeof input === 'object' && input !== null) {
+      const parts = Object.entries(input).map(([key, value]) => {
+        const formatValue = (val) => {
+          if (Array.isArray(val)) {
+            return '[' + val.map(formatValue).join(',') + ']';
+          }
+          return String(val);
+        };
+
+        return `${key} = ${formatValue(value)}`;
+      });
+
+      return parts.join(" ")
+    }
+    return String(input);
   }
+
+
   return (
     <div className="h-full bg-white dark:bg-[#1e1e1e] overflow-y-auto">
       <div className="p-4 md:p-6">
@@ -22,11 +39,15 @@ export default function ProblemDescription() {
 
           {problem.examples?.map((example, idx) => (
             <div key={idx} className="mt-6 dark:text-white">
-              <h3 className="text-lg font-medium text-gray-900 dark:text-white">Example {idx + 1}:</h3>
-              <pre className="mt-2 bg-gray-50 dark:bg-gray-800 p-4 rounded-md font-mono text-sm overflow-x-auto whitespace-pre-wrap">
-                <strong>Input:</strong> {example.input}
-                {"\n"}
-                <strong>Output:</strong> {example.output}
+              <h3 className="text-lg font-medium text-gray-900 dark:text-white">Example {idx + 1} :</h3>
+              <pre className="mt-2 bg-gray-50 dark:bg-gray-800 p-4 rounded-md font-mono text-sm whitespace-pre-wrap">
+                <div>
+                  <strong>Input: </strong>
+                  {renderInputInline(example.input)}
+                </div>
+                <div>
+                  <strong>Output:</strong> {String(example.output)}
+                </div>
               </pre>
             </div>
           ))}
