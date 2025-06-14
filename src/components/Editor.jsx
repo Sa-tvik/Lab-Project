@@ -15,6 +15,7 @@ const languageOptions = {
   C: { extension: cpp, key: 'c' }, 
 };
 
+
 export default function Editor() {
   const { id } = useParams();
   const problem = problems.find((p) => p.id === parseInt(id));
@@ -23,7 +24,10 @@ export default function Editor() {
   const [activeTest, setActiveTest] = useState(0);
 
   useEffect(() => {
-    if (problem?.starterCode) {
+    const saved = localStorage.getItem(`${problem.id}-${language}`)
+    if (saved){
+      setCode(JSON.parse(saved))
+    } else if (problem?.starterCode) {
       const langKey = languageOptions[language].key;
       setCode(problem.starterCode[langKey] || '// No starter code for this language');
     }
@@ -41,6 +45,7 @@ export default function Editor() {
       return String(val);
     }
   };
+
 
   return (
     <div className="flex flex-col h-full bg-white dark:bg-[#1e1e1e] overflow-y-auto">
@@ -63,7 +68,10 @@ export default function Editor() {
             value={code}
             theme={vscodeDark}
             extensions={[languageOptions[language].extension()]}
-            onChange={(val) => setCode(val)}
+            onChange={(val) => {
+              setCode(val);
+              localStorage.setItem(`${problem.id}-${language}`, JSON.stringify(val));
+            }}
             style={{ fontSize: 16 }}
           />
         </div>

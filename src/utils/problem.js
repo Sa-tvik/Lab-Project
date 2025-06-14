@@ -304,12 +304,7 @@ const problems = [
     examples: [
       {
         input: {
-          graph: {
-            0: [1, 2],
-            1: [2],
-            2: [0, 3],
-            3: [3],
-          },
+          graph: [[1, 2],[2],[0, 3],[3]],
           start: 2,
         },
         output: [2, 0, 1, 3],
@@ -320,12 +315,7 @@ const problems = [
       {
         case: "Case 1",
         input: {
-          graph: {
-            0: [1, 2],
-            1: [2],
-            2: [0, 3],
-            3: [3],
-          },
+          graph: [[1, 2],[2],[0, 3],[3]],
           start: 2,
         },
         output: [2, 0, 1, 3],
@@ -333,12 +323,7 @@ const problems = [
       {
         case: "Case 2",
         input: {
-          graph: {
-            0: [1],
-            1: [2],
-            2: [3],
-            3: [],
-          },
+          graph: [[1], [2], [3], []],
           start: 0,
         },
         output: [0, 1, 2, 3],
@@ -346,12 +331,7 @@ const problems = [
       {
         case: "Case 3",
         input: {
-          graph: {
-            0: [],
-            1: [0],
-            2: [1],
-            3: [2],
-          },
+          graph: [[], [0], [1], [2],],
           start: 3,
         },
         output: [3, 2, 1, 0],
@@ -415,12 +395,7 @@ const problems = [
       {
         case: "Case 3",
         input: {
-          graph: {
-            0: [],
-            1: [0],
-            2: [1],
-            3: [2],
-          },
+          graph: [[],[0],[1],[2]],
           start: 3,
         },
         output: [3, 2, 1, 0],
