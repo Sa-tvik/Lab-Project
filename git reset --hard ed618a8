@@ -1,0 +1,11 @@
+[33m4dae32d[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m HEAD@{0}: reset: moving to HEAD~1
+[33m2e97a2c[m[33m ([m[1;31morigin/main[m[33m)[m HEAD@{1}: reset: moving to HEAD~1
+[33med618a8[m HEAD@{2}: commit: made landing page
+[33m2e97a2c[m[33m ([m[1;31morigin/main[m[33m)[m HEAD@{3}: commit: made basic frontend pages for auth, setup backend and a basic auth
+[33m4dae32d[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m HEAD@{4}: commit: localstorage for code
+[33md9b359a[m HEAD@{5}: commit: made startercode, created time, changes in editor section
+[33m83edc75[m HEAD@{6}: commit: efficient problem data handling and minor ui fix
+[33ma4c5032[m HEAD@{7}: commit: makingn editor and fixing dark mode
+[33m90db510[m HEAD@{8}: commit: minor changes
+[33m1a8eebb[m HEAD@{9}: commit (initial): First commit
+[33m52c8b10[m HEAD@{11}: commit (initial): First commit
