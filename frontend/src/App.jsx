@@ -5,12 +5,14 @@ import ProblemList from './pages/ProblemList';
 import Problem from './pages/Problem';
 import Signup from './pages/signup';  
 import Login from './pages/login';    
+import LandingPage from './pages/LandingPage';
 
 function App() {
   return (
     <ThemeProvider>
       <BrowserRouter>
         <Routes>
+          <Route path="/" element={<LandingPage />} />
           <Route path="/" element={<ProblemList />} />
           <Route path="/problem/:id" element={<Problem />} />
           <Route path="/signup" element={<Signup />} />  
