@@ -14,7 +14,7 @@ export default function Header() {
       </div>
       
       <div className="flex-1 flex justify-center">
-      {location.pathname.startsWith('/problem') && (
+      {location.pathname.startsWith('/problem/') && (
         <div className="flex items-center gap-3">
           <button className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors text-sm">
             Run
@@ -27,7 +27,7 @@ export default function Header() {
       </div>
 
       <div className="flex-none flex items-center">
-      {location.pathname.startsWith('/problem') && (
+      {location.pathname.startsWith('/problem/') && (
         <Timer/>
       )}
         

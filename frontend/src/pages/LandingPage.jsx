@@ -52,9 +52,9 @@ export default function LandingPage() {
       </div>
 
       {/* Main Content */}
-      <main className="relative z-10 flex items-center justify-between px-8 py-16 max-w-7xl mx-auto">
-        {/* Left Side - Content */}
-        <div className="flex-1 max-w-2xl">
+      <main className='relative z-10 flex justify-between items-center max-w-7xl px-8 py-16 mx-auto'>
+        {/* Left Side  */}
+        <div className='flex-1 max-w-2xl'>
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -72,32 +72,27 @@ export default function LandingPage() {
               <span className="text-white">Online.</span>
             </h1>
           </motion.div>
-
-          <motion.p 
-            className="text-xl text-gray-300 mb-8 leading-relaxed"
+          <motion.p className="text-xl text-gray-300 mb-8 leading-relaxed leading"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
           >
-            Practice lab experiments, get evaluated and get you attendance marked — all in one place.
-            Master DAA and more upcoming labs with our interactive coding environment.
+            Practice lab experiments, write code, and get evaluated — all in one place. Master DSA, DAA, AIML, and more with our interactive coding environment.
           </motion.p>
-
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
           >
             <Link 
-              to="/login"
-              className="group inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 rounded-xl font-semibold text-lg transition-all duration-300 hover:scale-105 shadow-2xl hover:shadow-blue-500/25"
-            >
+              to="/signup"
+              className=" group inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 rounded-xl font-semibold text-lg transition-all duration-300 hover:scale-105 shadow-2xl hover:shadow-blue-500/25"
+              >
               <Play className="w-5 h-5" />
               Get Started
               <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" />
             </Link>
           </motion.div>
-
           {/* Feature Pills */}
           <motion.div 
             className="flex items-center gap-4 mt-12"
@@ -116,6 +111,7 @@ export default function LandingPage() {
           </motion.div>
         </div>
 
+        {/* Right side */}
         {/* Right Side - Illustration */}
         <motion.div 
           className="flex-1 flex justify-center items-center"
