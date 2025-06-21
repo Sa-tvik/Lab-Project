@@ -2,7 +2,6 @@ const problems = [
   {
     id: 1,
     title: "Iterative Binary Search",
-    difficulty: "Easy",
     tags: ["Binary Search", "Iterative"],
     description: "Implement iterative binary search on a sorted array to find the target element.",
     examples: [
@@ -39,7 +38,6 @@ const problems = [
   {
     id: 2,
     title: "Recursive Binary Search",
-    difficulty: "Easy",
     tags: ["Binary Search", "Recursive"],
     description: "Implement recursive binary search on a sorted array to find the target element.",
     examples: [
@@ -76,7 +74,6 @@ const problems = [
   {
     id: 3,
     title: "Bubble Sort",
-    difficulty: "Easy",
     tags: ["Sorting", "Bubble Sort"],
     description: "Sort an array using the bubble sort algorithm.",
     examples: [
@@ -113,7 +110,6 @@ const problems = [
   {
     id: 4,
     title: "Selection Sort",
-    difficulty: "Easy",
     tags: ["Sorting", "Selection Sort"],
     description: "Sort an array using the selection sort algorithm.",
     examples: [
@@ -150,7 +146,6 @@ const problems = [
   {
     id: 5,
     title: "Insertion Sort",
-    difficulty: "Easy",
     tags: ["Sorting", "Insertion Sort"],
     description: "Sort an array using the insertion sort algorithm.",
     examples: [
@@ -187,7 +182,6 @@ const problems = [
   {
     id: 6,
     title: "Linear Search",
-    difficulty: "Easy",
     tags: ["Search", "Linear Search"],
     description: "Implement linear search to find the index of a target element in an array.",
     examples: [
@@ -224,7 +218,6 @@ const problems = [
   {
     id: 7,
     title: "Merge Sort",
-    difficulty: "Medium",
     tags: ["Sorting", "Merge Sort"],
     description: "Implement merge sort to sort an array.",
     examples: [
@@ -261,7 +254,6 @@ const problems = [
   {
     id: 8,
     title: "Quick Sort",
-    difficulty: "Medium",
     tags: ["Sorting", "Quick Sort"],
     description: "Implement quick sort to sort an array.",
     examples: [
@@ -298,7 +290,6 @@ const problems = [
   {
     id: 9,
     title: "Depth First Search (DFS)",
-    difficulty: "Medium",
     tags: ["Graph", "DFS"],
     description: "Implement DFS traversal for a graph represented using adjacency list.",
     examples: [
@@ -347,7 +338,6 @@ const problems = [
   {
     id: 10,
     title: "Breadth First Search (BFS)",
-    difficulty: "Medium",
     tags: ["Graph", "BFS"],
     description: "Implement BFS traversal for a graph represented using adjacency list.",
     examples: [

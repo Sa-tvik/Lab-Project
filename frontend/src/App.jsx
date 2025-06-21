@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from './context/ThemeContext';
 import ProblemList from './pages/ProblemList';
 import Problem from './pages/Problem';
-import Signup from './pages/signup';  
+import Signup from './pages/Signup';  
 import Login from './pages/login';
 import LandingPage from './pages/LandingPage';
 

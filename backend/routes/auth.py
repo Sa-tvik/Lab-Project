@@ -1,5 +1,4 @@
 from flask import Blueprint, request, jsonify
-from supabase import create_client
 from utils.supabase_client import supabase
 
 auth_bp = Blueprint('auth', __name__)
@@ -10,7 +9,7 @@ def signup():
         data = request.get_json()
         email = data.get("email", "").strip()
         password = data.get("password", "").strip()
-
+        role = data.get("role","student")
         print("Received:", repr(email), repr(password))
         print(f"type(email): {type(email)}, type(password): {type(password)}")
 
@@ -22,7 +21,25 @@ def signup():
             "password": password
         })
 
-        print("Supabase response:", response)
+        if response.get("error"):
+            if "User already registered" in response["error"]["message"]:
+                return jsonify({"error": "User already exists. Please log in."}), 409
+            else:
+                return jsonify({"error": response["error"]["message"]}), 400
+
+        user = response.get("user")
+        if not user:
+            return jsonify({"error": "Signup failed. Please try again later."}), 400
+
+        user_id = user["id"]
+
+        # Insert role into the users table
+        supabase.table("users").insert({
+            "id": user_id,
+            "email": email,
+            "role": role
+        }).execute()
+
         return jsonify({"message": "User signed up successfully!"}), 200
 
     except Exception as e:

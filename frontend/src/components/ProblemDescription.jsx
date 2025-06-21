@@ -1,12 +1,35 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import problems from '../utils/problem';
 
 export default function ProblemDescription() {
   const { id } = useParams();
-  const problem = problems.find(p => p.id === parseInt(id));
+  const [problem, setProblem] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
-  if (!problem) return <div className="p-4 text-white">Problem not found</div>;
+  const fetchProblems = async () => {
+      try {
+        setError(false);
+        const res = await fetch(`http://localhost:5000/problem/${id}`);
+        const data = await res.json();
+  
+        if (!data || data.error) throw new Error("Invalid data");
+        setProblem(data);
+      } catch (err) {
+        console.error("Error fetching problems:", err);
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
+    };
+  
+    useEffect(() => {
+      fetchProblems();
+    }, [id]);
+
+  if (loading) return <div className="p-4 text-white">Loading...</div>;
+  if (error || !problem) return <div className="p-4 text-red-500">Problem not found.</div>;
+  
 
   function renderInputInline(input) {
     if (typeof input === 'object' && input !== null) {
