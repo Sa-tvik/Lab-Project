@@ -7,6 +7,7 @@ problem_Description_bp = Blueprint('problem_description', __name__)
 def get_problem_by_order(order):
     try:
         result = supabase.from_("problems").select("*").eq("order_id", order).single().execute()
+        print(result.data, flush=True)
 
         if not hasattr(result, "data") or result.data is None:
             return jsonify({"error": "Failed to fetch problem description"}), 500

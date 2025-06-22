@@ -1,54 +1,59 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { useProblemContext } from '../context/ProblemContext';
+import { ParseProblem } from '../utils/ParseProblem';
 
 export default function ProblemDescription() {
   const { id } = useParams();
-  const [problem, setProblem] = useState([]);
+  const { problems, setProblems } = useProblemContext();
+  const [problem, setProblem] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
-  const fetchProblems = async () => {
-      try {
-        setError(false);
-        const res = await fetch(`http://localhost:5000/problem/${id}`);
-        const data = await res.json();
+  useEffect(() => {
+    const rawProblem = problems.find((p) => p.order_id === Number(id));
+    
+    if (rawProblem) {
+      setProblem(ParseProblem(rawProblem));
+      setLoading(false);
+    } else {
+      const fetchProblem = async () => {
+        try {
+          const res = await fetch(`http://localhost:5000/problems`);
+          const data = await res.json();
+          console.log("fetching without context");
+          if (!Array.isArray(data)) throw new Error("Invalid data");
+          setProblems(data);
+          const fetchedProblem = data.find((p) => p.order_id === Number(id));
+          if (!fetchedProblem || fetchedProblem.error) throw new Error("Invalid data");  
+          
+          setProblem(ParseProblem(fetchedProblem));
+        } catch (err) {
+          console.error("Error fetching problem:", err);
+          setError(true);
+        } finally {
+          setLoading(false);
+        }
+      };
+      fetchProblem();
+    }
+  }, [id, problems, setProblems]);
+
   
-        if (!data || data.error) throw new Error("Invalid data");
-        setProblem(data);
-      } catch (err) {
-        console.error("Error fetching problems:", err);
-        setError(true);
-      } finally {
-        setLoading(false);
-      }
-    };
-  
-    useEffect(() => {
-      fetchProblems();
-    }, [id]);
 
   if (loading) return <div className="p-4 text-white">Loading...</div>;
   if (error || !problem) return <div className="p-4 text-red-500">Problem not found.</div>;
-  
 
-  function renderInputInline(input) {
+  const renderInputInline = (input) => {
     if (typeof input === 'object' && input !== null) {
       const parts = Object.entries(input).map(([key, value]) => {
-        const formatValue = (val) => {
-          if (Array.isArray(val)) {
-            return '[' + val.map(formatValue).join(',') + ']';
-          }
-          return String(val);
-        };
-
+        const formatValue = (val) => Array.isArray(val) ? `[${val.map(formatValue).join(',')}]` : String(val);
         return `${key} = ${formatValue(value)}`;
       });
-
-      return parts.join(" ")
+      return parts.join(" ");
     }
     return String(input);
-  }
-
+  };
 
   return (
     <div className="h-full bg-white dark:bg-[#1e1e1e] overflow-y-auto">
@@ -64,13 +69,11 @@ export default function ProblemDescription() {
             <div key={idx} className="mt-6 dark:text-white">
               <h3 className="text-lg font-medium text-gray-900 dark:text-white">Example {idx + 1} :</h3>
               <pre className="mt-2 bg-gray-50 dark:bg-gray-800 p-4 rounded-md font-mono text-sm whitespace-pre-wrap">
-                <div>
-                  <strong>Input: </strong>
-                  {renderInputInline(example.input)}
-                </div>
-                <div>
-                  <strong>Output:</strong> {String(example.output)}
-                </div>
+                <div><strong>Input: </strong>{renderInputInline(example.input)}</div>
+                <div><strong>Output:</strong> {
+                  Array.isArray(example.output)
+                  ? `[${example.output.join(", ")}]`
+                  : String(example.output)}</div>
               </pre>
             </div>
           ))}

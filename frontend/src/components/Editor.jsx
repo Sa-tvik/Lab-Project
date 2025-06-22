@@ -77,7 +77,7 @@ export default function Editor() {
         </div>
 
         {/* TEST CASES */}
-        <div className="w-full px-5 overflow-auto">
+        <div className="w-full px-5 overflow-auto hide-scrollbar">
           <div className="flex h-10 items-center space-x-6">
             <div className="relative flex h-full flex-col justify-center cursor-pointer">
               <div className="text-sm font-mono leading-5 text-white">Testcases</div>

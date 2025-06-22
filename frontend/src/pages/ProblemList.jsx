@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
+import { useProblemContext } from '../context/ProblemContext';
 
 export default function ProblemList() {
   const navigate = useNavigate();
-  const [problems, setProblems] = useState([]);
+  const {problems, setProblems} = useProblemContext();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
@@ -25,7 +26,11 @@ export default function ProblemList() {
   };
 
   useEffect(() => {
-    fetchProblems();
+    if (problems.length === 0) {
+      fetchProblems();
+    } else {
+      setLoading(false);
+    }
   }, []);
 
   return (
@@ -72,11 +77,11 @@ export default function ProblemList() {
                 problems.map((problem) => (
                   <div
                     key={problem.id}
-                    onClick={() => navigate(`/problem/${problem.order}`)}
+                    onClick={() => navigate(`/problem/${problem.order_id}`)}
                     className="p-4 hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer transition-colors"
                   >
                     <div className="flex items-center gap-4">
-                      <div className="text-white font-bold pb-5">{problem.order}.</div>
+                      <div className="text-white font-bold pb-5">{problem.order_id}.</div>
                       <div className="flex-1">
                         <h3 className="text-lg font-medium text-gray-900 dark:text-white">
                           {problem.title}

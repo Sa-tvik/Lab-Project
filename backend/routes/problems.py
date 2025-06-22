@@ -6,7 +6,7 @@ problems_bp = Blueprint('problems', __name__)
 @problems_bp.route("/problems", methods=["GET"])
 def get_problems():
     try:
-        response = supabase.from_("problems").select("*").order("order", desc=False).execute()
+        response = supabase.from_("problems").select("*").order("order_id", desc=False).execute()
 
         if not hasattr(response, "data") or response.data is None:
             return jsonify({"error": "Failed to fetch problems"}), 500
