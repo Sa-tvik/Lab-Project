@@ -11,35 +11,47 @@ export default function ProblemDescription() {
   const [error, setError] = useState(false);
 
   useEffect(() => {
-    const rawProblem = problems.find((p) => p.order_id === Number(id));
-    
-    if (rawProblem) {
-      setProblem(ParseProblem(rawProblem));
-      setLoading(false);
+    const local = localStorage.getItem(`problem-${id}`);
+    const parsedLocal = local ? JSON.parse(local) : null;
+
+    if (!parsedLocal) {
+      const rawProblem = problems.find((p) => p.order_id === Number(id));
+      if (rawProblem) {
+        setProblem(ParseProblem(rawProblem));
+        localStorage.setItem(`problem-${id}`, JSON.stringify(rawProblem));
+        setLoading(false);
+      } else {
+        const fetchProblem = async () => {
+          try {
+            const res = await fetch(`http://localhost:5000/problem`);
+            const data = await res.json();
+            console.log("fetching without context");
+            if (!Array.isArray(data)) throw new Error("Invalid data");
+            setProblems(data);
+            const fetchedProblem = data.find((p) => p.order_id === Number(id));
+            if (!fetchedProblem || fetchedProblem.error) throw new Error("Invalid data");
+            setProblem(ParseProblem(fetchedProblem));
+            localStorage.setItem(`problem-${id}`, JSON.stringify(fetchedProblem));
+          } catch (err) {
+            console.error("Error fetching problem:", err);
+            setError(true);
+          } finally {
+            setLoading(false);
+          }
+        };
+        fetchProblem();
+      }
     } else {
-      const fetchProblem = async () => {
-        try {
-          const res = await fetch(`http://localhost:5000/problems`);
-          const data = await res.json();
-          console.log("fetching without context");
-          if (!Array.isArray(data)) throw new Error("Invalid data");
-          setProblems(data);
-          const fetchedProblem = data.find((p) => p.order_id === Number(id));
-          if (!fetchedProblem || fetchedProblem.error) throw new Error("Invalid data");  
-          
-          setProblem(ParseProblem(fetchedProblem));
-        } catch (err) {
-          console.error("Error fetching problem:", err);
-          setError(true);
-        } finally {
-          setLoading(false);
-        }
-      };
-      fetchProblem();
+      try {
+        setProblem(ParseProblem(parsedLocal));
+      } catch (err) {
+        console.error("Error parsing local problem:", err);
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
     }
   }, [id, problems, setProblems]);
-
-  
 
   if (loading) return <div className="p-4 text-white">Loading...</div>;
   if (error || !problem) return <div className="p-4 text-red-500">Problem not found.</div>;
@@ -58,9 +70,19 @@ export default function ProblemDescription() {
   return (
     <div className="h-full bg-white dark:bg-[#1e1e1e] overflow-y-auto">
       <div className="p-4 md:p-6">
-        <h1 className="text-xl md:text-2xl font-medium text-gray-900 dark:text-white">
-          {problem.title}
+        <h1 className="text-lg md:text-2xl font-medium text-gray-900 dark:text-white">
+          {problem.order_id}. {problem.title}
         </h1>
+        <div className="mt-1 flex gap-2">
+          {problem.tags.map((tag) => (
+            <span
+              key={tag}
+              className="px-3 py-2 text-sm rounded-2xl dark:bg-gray-800 dark:text-white"
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
 
         <div className="mt-6 prose dark:prose-invert max-w-none">
           <p className="text-gray-600 dark:text-gray-300">{problem.description}</p>
@@ -72,8 +94,9 @@ export default function ProblemDescription() {
                 <div><strong>Input: </strong>{renderInputInline(example.input)}</div>
                 <div><strong>Output:</strong> {
                   Array.isArray(example.output)
-                  ? `[${example.output.join(", ")}]`
-                  : String(example.output)}</div>
+                    ? `[${example.output.join(", ")}]`
+                    : String(example.output)}
+                </div>
               </pre>
             </div>
           ))}

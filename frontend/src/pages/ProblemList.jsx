@@ -26,7 +26,7 @@ export default function ProblemList() {
   };
 
   useEffect(() => {
-    if (problems.length === 0) {
+    if (!problems || problems.length == 0) {
       fetchProblems();
     } else {
       setLoading(false);
@@ -90,7 +90,7 @@ export default function ProblemList() {
                           {problem.tags.map((tag) => (
                             <span
                               key={tag}
-                              className="px-2 py-0.5 bg-gray-100 dark:bg-black text-gray-600 dark:text-gray-300 rounded text-xs"
+                              className="px-2 py-1 bg-gray-100 dark:bg-black text-gray-600 dark:text-gray-300 rounded-2xl text-xs"
                             >
                               {tag}
                             </span>

@@ -121,8 +121,8 @@ export default function Editor() {
                 </div>
               </div>
               <div>
-                <p className="text-sm font-mono mt-4">Expected Output:</p>
-                <div className="font-mono w-full rounded-lg px-3 py-2 bg-gray-800 whitespace-pre-wrap break-all text-yellow-300">
+                <p className="text-sm font-mono mt-4 mb-2">Expected Output:</p>
+                <div className="font-mono w-full rounded-lg px-3 py-2 bg-gray-800 whitespace-pre-wrap break-all text-white">
                   {problem.testCases[activeTest].output}
                 </div>
               </div>
