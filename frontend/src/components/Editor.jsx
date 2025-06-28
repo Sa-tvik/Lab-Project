@@ -6,7 +6,6 @@ import { vscodeDark } from '@uiw/codemirror-theme-vscode';
 import { java } from '@codemirror/lang-java';
 import { cpp } from '@codemirror/lang-cpp';
 import { python } from '@codemirror/lang-python';
-import problems from '../utils/problem';
 
 const languageOptions = {
   Java: { extension: java, key: 'java' },
@@ -15,25 +14,69 @@ const languageOptions = {
   C: { extension: cpp, key: 'c' }, 
 };
 
-
 export default function Editor() {
   const { id } = useParams();
-  const problem = problems.find((p) => p.id === parseInt(id));
   const [language, setLanguage] = useState('Java');
   const [code, setCode] = useState('');
+  const [starterCode, setStarterCode] = useState([]);
+  const [testCases, setTestcases] = useState([]);
   const [activeTest, setActiveTest] = useState(0);
+  const [error, setError] = useState(true)
 
   useEffect(() => {
-    const saved = localStorage.getItem(`${problem.id}-${language}`)
-    if (saved){
-      setCode(JSON.parse(saved))
-    } else if (problem?.starterCode) {
-      const langKey = languageOptions[language].key;
-      setCode(problem.starterCode[langKey] || '// No starter code for this language');
+    const localTc = localStorage.getItem(`problem-${id}-starterCode`)
+    let parsedLocalTc =[]
+    try {
+      const temp = JSON.parse(localTc);
+      parsedLocalTc = Array.isArray(temp)
+        ? temp
+        : Object.entries(temp).map(([lang, code]) => ({
+            language: lang,
+            code,
+          }));
+    } catch {
+      parsedLocalTc = [];
     }
-  }, [problem, language]);
 
-  if (!problem) return <div className="text-white p-4">Problem not found</div>;
+    if(parsedLocalTc.length>0){
+      setStarterCode(parsedLocalTc)
+      setError(false)
+    }else{
+      const fetchStarterCode = async() => {
+        try{
+          const scRes = await fetch(`http://localhost:5000/problem/${id}/starter`);
+          const scData = await scRes.json();
+  
+          setStarterCode(scData);
+          localStorage.setItem(`problem-${id}-starterCode`, JSON.stringify(scData));  
+        } catch (err){
+          console.error("Error fetching problem:", err);
+          setError(true);
+        }
+      }
+      fetchStarterCode();
+    }
+    const fetchTestCases = async() =>{
+      try {
+        const tcRes = await fetch(`http://localhost:5000/problem/${id}/Editor`)
+        const tcData = await tcRes.json();
+        setTestcases(tcData)
+      } catch (err) {
+        console.error("Error fetching testcase:", err);
+        setError(true);
+      }
+    }
+    fetchTestCases();
+  }, [id]);
+
+  useEffect(() => {
+    const langObj = starterCode.find(
+      (item) => item.language.toLowerCase() === language.toLowerCase()
+    );
+    if (langObj) {
+      setCode(langObj.code);
+    }
+  }, [starterCode, language]);
 
   // Helper to format values with quotes for strings, JSON for arrays/objects, else string
   const formatValueWithQuotes = (val) => {
@@ -46,6 +89,13 @@ export default function Editor() {
     }
   };
 
+
+  const saveToLocalStorage = (lang, val) => {
+    const key = `problem-${id}-starterCode`;
+    const existing = JSON.parse(localStorage.getItem(key)) || {};
+    existing[lang.toLowerCase()] = val;
+    localStorage.setItem(key, JSON.stringify(existing));
+  };
 
   return (
     <div className="flex flex-col h-full bg-white dark:bg-[#1e1e1e] overflow-y-auto">
@@ -70,7 +120,7 @@ export default function Editor() {
             extensions={[languageOptions[language].extension()]}
             onChange={(val) => {
               setCode(val);
-              localStorage.setItem(`${problem.id}-${language}`, JSON.stringify(val));
+              saveToLocalStorage(language, val);
             }}
             style={{ fontSize: 16 }}
           />
@@ -87,7 +137,7 @@ export default function Editor() {
 
           {/* Buttons for test case selection */}
           <div className="flex flex-wrap gap-3 mt-4 mb-6">
-            {problem.testCases.map((_, index) => (
+            {testCases.map((_, index) => (
               <button
                 key={index}
                 onClick={() => setActiveTest(index)}
@@ -103,12 +153,12 @@ export default function Editor() {
           </div>
 
           {/* Display the selected test case input/output */}
-          {problem.testCases[activeTest] && (
+          {testCases[activeTest] && (
             <div className="font-normal text-white space-y-4 mb-10">
               <div>
                 <p className="text-sm font-mono mb-2">Input:</p>
                 <div className="flex flex-col gap-4">
-                  {Object.entries(problem.testCases[activeTest].input).map(([key, val]) => (
+                  {Object.entries(JSON.parse(testCases[activeTest].input)).map(([key, val]) => (
                     <div
                       key={key}
                       className="bg-gray-800 rounded-lg p-3 min-w-[120px] w-full break-words"
@@ -123,7 +173,7 @@ export default function Editor() {
               <div>
                 <p className="text-sm font-mono mt-4 mb-2">Expected Output:</p>
                 <div className="font-mono w-full rounded-lg px-3 py-2 bg-gray-800 whitespace-pre-wrap break-all text-white">
-                  {problem.testCases[activeTest].output}
+                  {testCases[activeTest].expected_output}
                 </div>
               </div>
             </div>

@@ -23,7 +23,7 @@ export default function ProblemDescription() {
       } else {
         const fetchProblem = async () => {
           try {
-            const res = await fetch(`http://localhost:5000/problem`);
+            const res = await fetch(`http://localhost:5000/problems`);
             const data = await res.json();
             console.log("fetching without context");
             if (!Array.isArray(data)) throw new Error("Invalid data");

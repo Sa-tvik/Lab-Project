@@ -26,7 +26,7 @@ export default function ProblemList() {
   };
 
   useEffect(() => {
-    if (!problems || problems.length == 0) {
+    if (!problems || problems.length === 0) {
       fetchProblems();
     } else {
       setLoading(false);
