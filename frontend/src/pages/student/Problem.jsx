@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   ChevronLeft,
@@ -6,12 +6,11 @@ import {
   Maximize2,
   Minimize2,
   Settings,
-  Timer as TimerIcon,
   User,
-  Sun
 } from 'lucide-react';
+import Split from 'react-split';
 import { useNavigate } from 'react-router-dom';
-import { useTheme } from '../../context/ThemeContext';
+import Timer from '../../components/Timer';
 import Editor from '../../components/Editor';
 import ProblemDescription from '../../components/ProblemDescription';
 import Logo from '../../components/Logo';
@@ -37,26 +36,39 @@ const sidebarVariants = {
 
 function Problem() {
   const navigate = useNavigate();
-  const { toggleTheme } = useTheme();
   const [descriptionOpen, setDescriptionOpen] = useState(true);
+  const [splitKey, setSplitKey] = useState(0);
 
+
+  useEffect(() => {
+    const handleResize = () => setSplitKey((prev) => prev + 1);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+  
+  useEffect(() => {
+    setTimeout(() => setSplitKey((prev) => prev + 1)); 
+  }, [descriptionOpen]);
+  
+  
   return (
-    <div className="h-screen flex flex-col bg-white dark:bg-[#1e1e1e] font-inter">
-      {/* Full Custom Header (NOT a separate component) */}
+    <div className="h-screen flex flex-col bg-white dark:bg-black font-inter">
+      {/* Custom Header */}
+  cd 
       <motion.div 
-        className="h-14 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 flex items-center px-4 justify-between"
+        className="h-14 bg-white dark:bg-black flex rounded-md m-2 items-center px-4 justify-between"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-      >
+        >
         {/* Left */}
         <div className="flex items-center gap-4">
           <motion.button
-            onClick={() => navigate('/problemList')}
+            onClick={() => navigate('/problems')}
             className="flex items-center gap-2 px-3 py-1.5 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-          >
+            >
             <ChevronLeft className="w-4 h-4" />
             <span className="text-sm font-medium">Back to Problems</span>
           </motion.button>
@@ -69,9 +81,8 @@ function Problem() {
         {/* Right */}
         <div className="flex items-center gap-3">
           {/* Timer */}
-          <div className="flex items-center gap-2 px-3 py-1.5 bg-gray-100 dark:bg-gray-700 rounded-lg">
-            <TimerIcon className="w-4 h-4 text-orange-500" />
-            <span className="text-sm font-mono text-gray-900 dark:text-white">45:30</span>
+          <div className="flex text-white items-center px-3 py-1.5 rounded-lg">
+            <Timer  />
           </div>
 
           {/* Toggle Description */}
@@ -81,18 +92,8 @@ function Problem() {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             title={descriptionOpen ? "Hide Description" : "Show Description"}
-          >
-            {descriptionOpen ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
-          </motion.button>
-
-          {/* Theme */}
-          <motion.button
-            onClick={toggleTheme}
-            className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <Sun className="w-4 h-4 text-gray-600 dark:text-gray-400" />
+            >
+            {descriptionOpen ? <Minimize2 className="w-4 h-4 text-gray-400" /> : <Maximize2 className="w-4 h-4 text-gray-400" />}
           </motion.button>
 
           <motion.button className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
@@ -102,72 +103,47 @@ function Problem() {
           <motion.button className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
             <Settings className="w-4 h-4 text-gray-600 dark:text-gray-400" />
           </motion.button>
+        
         </div>
       </motion.div>
 
       {/* Main Body */}
-      <div className="flex-1 flex overflow-hidden">
-        {/* Sidebar */}
-        <AnimatePresence>
-          {descriptionOpen && (
-            <motion.div
-              className="bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 overflow-hidden"
+      <div className="flex-1 flex overflow-hidden mb-2">
+        <Split key={splitKey}className="flex flex-row w-full"
+        sizes={[50, 50]}
+        minSize={0}
+        gutterSize={12}
+        gutter={() => {
+          const gutter = document.createElement('div');
+          gutter.className = 'custom-gutter';
+          return gutter;
+        }}>
+          {/* Sidebar */}
+          <AnimatePresence>
+            {descriptionOpen && (
+              <motion.div
+              className="bg-white dark:bg-black overflow-hidden ml-2 rounded-lg border border-gray-700"
               variants={sidebarVariants}
               initial="closed"
               animate="open"
               exit="closed"
-            >
-              <div className="h-full flex flex-col">
-                <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700/50">
-                  <h2 className="font-semibold text-gray-900 dark:text-white">Problem Description</h2>
-                  <motion.button
-                    onClick={() => setDescriptionOpen(false)}
-                    className="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    <ChevronLeft className="w-4 h-4 text-gray-600 dark:text-gray-400" />
-                  </motion.button>
-                </div>
-
-                <div className="flex-1 overflow-hidden">
-                  <ProblemDescription />
-                </div>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* Editor Section */}
-        <motion.div
-          className="flex-1 flex flex-col"
-          layout
-          transition={{ type: "spring", stiffness: 300, damping: 40 }}
-        >
-          {/* Show Description Button */}
-          {!descriptionOpen && (
-            <motion.div 
-              className="p-2 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.2 }}
-            >
-              <motion.button
-                onClick={() => setDescriptionOpen(true)}
-                className="flex items-center gap-2 px-3 py-1.5 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
               >
-                <ChevronRight className="w-4 h-4" />
-                <span className="text-sm font-medium">Show Description</span>
-              </motion.button>
-            </motion.div>
-          )}
-          
-          <div className="flex-1">
-            <Editor />
-          </div>
-        </motion.div>
+                <ProblemDescription />
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Editor Section */}
+          <motion.div
+            className="flex flex-col h-screen flex-1"
+            layout
+            transition={{ type: "spring", stiffness: 300, damping: 40 }}
+            >
+            <div className="flex-1 min-h-0 flex flex-col">
+              <Editor />
+            </div>
+          </motion.div>
+        </Split>
       </div>
     </div>
   );

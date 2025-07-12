@@ -7,8 +7,6 @@ import {
   BookOpen,
   Code2,
   AlertCircle,
-  TrendingUp,
-  Clock,
   Tag,
   CheckCircle2,
   ChevronRight
@@ -87,7 +85,7 @@ export default function ProblemDescription() {
     }
   }, [id, problems, setProblems]);
 
-  if (loading) return <div className="p-4 text-white">Loading...</div>;
+  if (loading) return <div className="p-4 text-gray-400">Loading...</div>;
   if (error || !problem) return <div className="p-4 text-red-500">Problem not found.</div>;
 
   const renderInputInline = (input) => {
@@ -119,7 +117,7 @@ export default function ProblemDescription() {
                 </h1>
               </div>
               <div className="flex items-center gap-4 flex-wrap">
-                <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-100 border border-gray-300 dark:border-gray-600">
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-100 border border-gray-300 dark:border-gray-600">
                   {problem.difficulty || 'Unrated'}
                 </span>
               </div>
@@ -141,17 +139,18 @@ export default function ProblemDescription() {
         </motion.div>
 
         <motion.div variants={itemVariants}>
-          <div className="border-b border-gray-200 dark:border-gray-700">
+          <div>
             <nav className="flex space-x-8">
               {tabs.map((tab) => {
                 const Icon = tab.icon;
+                const isActive = activeTab === tab.id
                 return (
                   <motion.button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
-                    className={`flex items-center gap-2 py-3 px-1 border-b-2 font-medium text-sm transition-all duration-200 ${
-                      activeTab === tab.id
-                        ? 'border-blue-500 text-blue-600 dark:text-blue-400'
+                    className={`relative flex items-center gap-1 py-3 px-3 font-medium text-sm transition-all duration-200 z-10 ${
+                      isActive
+                        ? 'dark:text-white'
                         : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
                     }`}
                     whileHover={{ y: -1 }}
@@ -159,6 +158,13 @@ export default function ProblemDescription() {
                   >
                     <Icon className="w-4 h-4" />
                     {tab.label}
+                    {isActive && (
+                      <motion.div
+                        layoutId="tab-bg"
+                        className="absolute inset-0 rounded-lg bg-gray-900 z-[-1] shadow-lg"
+                        transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                      />
+                    )}
                   </motion.button>
                 );
               })}
@@ -169,7 +175,7 @@ export default function ProblemDescription() {
         <AnimatePresence mode="wait">
           <motion.div key={activeTab} variants={tabVariants} initial="hidden" animate="visible" exit="exit" className="space-y-6">
             {activeTab === 'description' && (
-              <div className="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+              <div className="bg-gray-50 dark:bg-gray-900 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700">
                 <p className="text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-wrap">
                   {problem.description}
                 </p>
@@ -181,24 +187,23 @@ export default function ProblemDescription() {
                 {problem.examples?.map((example, index) => (
                   <motion.div
                     key={index}
-                    className="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-6 border border-gray-200 dark:border-gray-700"
+                    className="bg-gray-50 dark:bg-gray-900 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.1 }}
                   >
                     <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-                      <CheckCircle2 className="w-5 h-5 text-green-500" />
                       Example {index + 1}
                     </h3>
                     <div className="space-y-3">
                       <div>
-                        <span className="text-sm font-medium text-gray-600 dark:text-gray-400">Input:</span>
-                        <pre className="mt-1 bg-gray-100 dark:bg-gray-800 p-3 rounded-lg font-mono text-sm text-gray-900 dark:text-white overflow-x-auto">
+                        <span className="text-sm font-medium text-gray-600 dark:text-white">Input:</span>
+                        <pre className="mt-1 bg-gray-100 dark:bg-gray-800 p-3 rounded-xl shadow-lg font-mono text-sm text-gray-900 dark:text-white overflow-x-auto">
                           {renderInputInline(example.input)}
                         </pre>
                       </div>
                       <div>
-                        <span className="text-sm font-medium text-gray-600 dark:text-gray-400">Output:</span>
+                        <span className="text-sm font-medium text-gray-600 dark:text-white">Output:</span>
                         <pre className="mt-1 bg-gray-100 dark:bg-gray-800 p-3 rounded-lg font-mono text-sm text-gray-900 dark:text-white overflow-x-auto">
                           {Array.isArray(example.output) ? `[${example.output.join(", ")}]` : String(example.output)}
                         </pre>
@@ -210,16 +215,15 @@ export default function ProblemDescription() {
             )}
 
             {activeTab === 'constraints' && (
-              <div className="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+              <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-                  <AlertCircle className="w-5 h-5 text-yellow-500" />
                   Constraints
                 </h3>
                 <ul className="space-y-2 text-gray-700 dark:text-gray-300">
                   {problem.constraints?.map((c, i) => (
                     <li key={i} className="flex items-center gap-2">
-                      <ChevronRight className="w-4 h-4 text-gray-400" />
-                      <code className="bg-gray-200 dark:bg-gray-600 px-2 py-1 rounded text-sm font-mono">{c}</code>
+                      <ChevronRight className="w-4 h-4 text-white" />
+                      <code className="text-white bg-gray-200 dark:bg-gray-800 px-2 py-1 rounded text-sm font-mono">{c}</code>
                     </li>
                   ))}
                 </ul>

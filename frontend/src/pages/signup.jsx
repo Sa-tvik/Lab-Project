@@ -40,7 +40,7 @@ function Signup() {
         alert(data?.error || "Something went wrong");
       } else if (res.ok) {
         setTimeout(() => {
-          navigate("/problemlist"); 
+          navigate("/problems"); 
         });
       }
     } catch (err) {

@@ -26,6 +26,10 @@
     flex-direction: row;
 }
 
+html, body, #root {
+  height: 100%;
+  margin: 0;
+}
 
 .gutter {
     background-color: gray;
@@ -35,22 +39,43 @@
 .dark .gutter{
   background-color: #000000;
 }
-.gutter:hover {
-	background-color: #0a84ff;
+
+.custom-gutter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: col-resize;
+}
+.custom-gutter::after {
+  content: '';
+  width: 3px;
+  height: 20px;
+  background-color: #4B5563; 
+  border-radius: 9999px;
+}
+.custom-gutter-vertical {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: col-resize;
+}
+.custom-gutter-vertical::after {
+  content: '';
+  width: 20px;
+  height: 3px;
+  background-color: #4B5563; 
+  border-radius: 9999px;
 }
 
-.gutter.gutter-horizontal {
-    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==');
-    cursor: col-resize;
-}
 .cm-focused{
   outline: none;
 }
-.hide-scrollbar::-webkit-scrollbar {
+
+.hide-scrollbar::-webkit-scrollbar, .cm-scroller::-webkit-scrollbar{
   display: none;
 }
 
-.hide-scrollbar {
+.hide-scrollbar, .cm-scroller {
   -ms-overflow-style: none; 
   scrollbar-width: none;    
 }

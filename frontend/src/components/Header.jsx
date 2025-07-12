@@ -5,14 +5,10 @@ import {
   Maximize2,
   Minimize2,
   Settings,
-  Timer as TimerIcon,
   User,
-  Sun,
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Logo from './Logo';
-import Timer from './Timer';
-import { useTheme } from '../context/ThemeContext';
 
 export default function Header({
   onSettingsClick,
@@ -20,12 +16,13 @@ export default function Header({
   onToggleDescription,
   descriptionOpen,
 }) {
+  const location = useLocation();
   const navigate = useNavigate();
-  const { toggleTheme } = useTheme();
+  const showRunSubmit = location.pathname.startsWith('/problem/');
 
   return (
     <motion.div
-      className="h-14 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 flex items-center px-4 justify-between"
+      className="h-14 bg-white dark:bg-black flex items-center px-4 justify-between"
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
@@ -52,12 +49,6 @@ export default function Header({
       <div className="flex items-center gap-3">
         {showRunSubmit && (
           <>
-            <div className="flex items-center gap-2 px-3 py-1.5 bg-gray-100 dark:bg-gray-700 rounded-lg">
-              <TimerIcon className="w-4 h-4 text-orange-500" />
-              <span className="text-sm font-mono text-gray-900 dark:text-white">
-                <Timer />
-              </span>
-            </div>
 
             {/* Optional: Show/Hide Description Button */}
             {onToggleDescription && (
@@ -77,16 +68,6 @@ export default function Header({
             )}
           </>
         )}
-
-        {/* Theme Toggle */}
-        <motion.button
-          onClick={toggleTheme}
-          className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          <Sun className="w-4 h-4 text-gray-600 dark:text-gray-400" />
-        </motion.button>
 
         <motion.button
           onClick={onProfileClick}

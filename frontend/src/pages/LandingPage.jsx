@@ -20,7 +20,7 @@ export default function LandingPage() {
             <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
           </div>
           <span className="text-xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-            Lab IDE
+            LabCAD
           </span>
         </motion.div>
         

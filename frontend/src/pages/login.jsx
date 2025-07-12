@@ -26,7 +26,7 @@ function Login() {
             const data = await res.json();
             if (res.ok) {
                 setTimeout(() => {
-                    navigate("/problemlist"); 
+                    navigate("/problems"); 
                 }); 
             } else {
                 alert(data?.error || "Something went wrong");

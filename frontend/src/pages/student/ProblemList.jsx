@@ -38,7 +38,7 @@ export default function ProblemList() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-900 font-inter">
+    <div className="min-h-screen bg-black font-inter">
       <Header />
       <div className="max-w-6xl mx-auto px-6 py-8">
         <motion.div 
