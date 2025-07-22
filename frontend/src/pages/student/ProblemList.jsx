@@ -1,5 +1,3 @@
-// ProblemList.js with sleek UI, column labels, hover animation, and correct background styling
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';

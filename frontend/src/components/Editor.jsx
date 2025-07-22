@@ -5,13 +5,9 @@ import {
   Play,
   Send,
   ChevronDown,
-  Copy,
-  RotateCcw,
   CheckCircle2,
   XCircle,
   Clock,
-  ChevronLeft,
-  ChevronRight,
 } from 'lucide-react';
 import CodeMirror from '@uiw/react-codemirror';
 import Split from 'react-split';
@@ -212,7 +208,7 @@ export default function Editor() {
           
         {/* TEST CASES / RESULTS */}
         <div className="relative h-full rounded-lg bg-white dark:bg-gray-800 border-t border-gray-300 dark:border-gray-700 flex flex-col overflow-hidden">
-          <div className='flex justify-between mt-2 mb-2 rounded-b-lg'>
+          <div className='flex justify-between mt-2 mb-2'>
             {/* Tabs */}
             <div className="flex gap-4 px-4 ">
               {['testcase', 'result'].map((tab) => { 
@@ -315,7 +311,7 @@ export default function Editor() {
           )}
           
           {/* Single Test Case Display */}
-          <div className="flex-1 p-6 pt-3 overflow-hidden">
+          <div className="flex-1 min-h-0 p-6 pt-3 overflow-auto">
             <AnimatePresence mode='wait'>
               <motion.div
                 key={`${activeTab}-${currentTestCase}`}
@@ -323,13 +319,13 @@ export default function Editor() {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -20 }}
                 transition={{ duration: 0.3 }}
-                className="h-full"
+                className="h-auto"
               >
                 {testCases.length > 0 && (
-                  <div className="h-full">
+                  <div className="h-auto">
                     {activeTab === 'testcase' && (
                       <div className="min-h-0">
-                        <div className="bg-white dark:bg-gray-900 rounded-lg p-6 border border-gray-200 dark:border-gray-700 font-mono text-sm h-full">
+                        <div className="bg-white dark:bg-gray-900 rounded-lg p-6 border border-gray-200 dark:border-gray-700 font-mono text-sm max-h-[300px] overflow-auto">
                           <div className="space-y-3">
                             <div className="text-gray-700 dark:text-gray-300">
                               <span className="font-semibold">Input:</span>
@@ -349,13 +345,13 @@ export default function Editor() {
                     )}
 
                     {activeTab === 'result' && showResults && (
-                      <div className="h-full">
+                      <div className="h-auto">
                         {(() => {
                           const isPassed = currentTestCase % 2;
                           const status = isPassed ? 'passed' : 'failed';
                           
                           return (
-                            <div className="bg-white dark:bg-gray-900 rounded-lg p-6 border border-gray-200 dark:border-gray-700 font-mono text-sm h-full">
+                            <div className="bg-white dark:bg-gray-900 rounded-lg p-5 mb-5 border border-gray-200 dark:border-gray-700 font-mono text-sm max-h-[300px] overflow-auto">
                               <div className="space-y-3">
                                 <div className="text-gray-700 dark:text-gray-300">
                                   <span className="font-semibold">Input:</span>

@@ -1,0 +1,22 @@
+# Python bytecode
+__pycache__/
+*.py[cod]
+
+# Environment variables
+.env
+
+# Flask instance folder
+instance/
+
+# Virtual environment
+venv/
+ENV/
+env/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Editor folders
+.vscode/
+.idea/

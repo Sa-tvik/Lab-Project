@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Code2, Mail, Lock, Eye, EyeOff, User, School, Phone, Calendar, X } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 function Signup() {
+  const navigate = useNavigate()
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [formData, setFormData] = useState({
@@ -17,19 +19,34 @@ function Signup() {
     role: 'student',
     agreeToTerms: false
   });
+  const validateEmail = (email) => {
+    const collegeDomain = "@muj.manipal.edu"; 
+    return email.endsWith(collegeDomain);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setMsg("⏳ Please wait...");
+    if (!validateEmail(formData.email)) {
+      alert("Please use your official college email (@muj.manipal.edu)");
+      return;
+    }
+    if (formData.password !== formData.confirmPassword) {
+      alert("Passwords do not match");
+      return;
+    }
 
     try {
-      const res = await fetch("http://localhost:5000/singup", {
+      const res = await fetch("http://localhost:5000/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ 
-          email: formData.email, 
+          email: formData.email,
           password: formData.password,
-          role: formData.role
+          role: formData.role,
+          first_name: formData.firstName,
+          last_name: formData.lastName,
+          phone: formData.phone,
+          registration_number: formData.registrationNumber
         }),
       });
 
@@ -77,6 +94,7 @@ function Signup() {
             to='/'
             className='absolute top-7 right-5'
             >
+
               <X className='w-5 h-5'/>
             </Link>
             <div className="text-center mb-8">

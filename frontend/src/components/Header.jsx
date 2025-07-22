@@ -9,6 +9,7 @@ import {
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Logo from './Logo';
+import ProfileMenu from './ProfileMenu';
 
 export default function Header({
   onSettingsClick,
@@ -69,14 +70,14 @@ export default function Header({
           </>
         )}
 
-        <motion.button
+        <motion
           onClick={onProfileClick}
           className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
-          <User className="w-4 h-4 text-gray-600 dark:text-gray-400" />
-        </motion.button>
+          <ProfileMenu/>
+        </motion>
 
         <motion.button
           onClick={onSettingsClick}

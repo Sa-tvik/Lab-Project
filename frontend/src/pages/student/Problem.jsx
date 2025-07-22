@@ -6,7 +6,6 @@ import {
   Maximize2,
   Minimize2,
   Settings,
-  User,
 } from 'lucide-react';
 import Split from 'react-split';
 import { useNavigate } from 'react-router-dom';
@@ -14,6 +13,7 @@ import Timer from '../../components/Timer';
 import Editor from '../../components/Editor';
 import ProblemDescription from '../../components/ProblemDescription';
 import Logo from '../../components/Logo';
+import ProfileMenu from '../../components/ProfileMenu';
 
 const sidebarVariants = {
   open: {
@@ -54,9 +54,9 @@ function Problem() {
   return (
     <div className="h-screen flex flex-col bg-white dark:bg-black font-inter">
       {/* Custom Header */}
-  cd 
+  
       <motion.div 
-        className="h-14 bg-white dark:bg-black flex rounded-md m-2 items-center px-4 justify-between"
+        className="h-14 bg-white dark:bg-black flex rounded-md m-2 mb-0 items-center px-4 justify-between"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
@@ -96,9 +96,9 @@ function Problem() {
             {descriptionOpen ? <Minimize2 className="w-4 h-4 text-gray-400" /> : <Maximize2 className="w-4 h-4 text-gray-400" />}
           </motion.button>
 
-          <motion.button className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
-            <User className="w-4 h-4 text-gray-600 dark:text-gray-400" />
-          </motion.button>
+          {/* <motion.button className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"> */}
+            <ProfileMenu/>
+          {/* </motion.button> */}
 
           <motion.button className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
             <Settings className="w-4 h-4 text-gray-600 dark:text-gray-400" />
