@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   ChevronLeft,
-  ChevronRight,
   Maximize2,
   Minimize2,
   Settings,
@@ -34,7 +33,7 @@ const sidebarVariants = {
   }
 };
 
-function Problem() {
+function Problem() { 
   const navigate = useNavigate();
   const [descriptionOpen, setDescriptionOpen] = useState(true);
   const [splitKey, setSplitKey] = useState(0);
@@ -96,9 +95,7 @@ function Problem() {
             {descriptionOpen ? <Minimize2 className="w-4 h-4 text-gray-400" /> : <Maximize2 className="w-4 h-4 text-gray-400" />}
           </motion.button>
 
-          {/* <motion.button className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"> */}
             <ProfileMenu/>
-          {/* </motion.button> */}
 
           <motion.button className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
             <Settings className="w-4 h-4 text-gray-600 dark:text-gray-400" />
@@ -139,7 +136,7 @@ function Problem() {
             layout
             transition={{ type: "spring", stiffness: 300, damping: 40 }}
             >
-            <div className="flex-1 min-h-0 flex flex-col">
+            <div className="flex-1 min-h-0 flex flex-col">           
               <Editor />
             </div>
           </motion.div>

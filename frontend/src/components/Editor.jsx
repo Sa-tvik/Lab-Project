@@ -18,10 +18,10 @@ import { cpp } from '@codemirror/lang-cpp';
 import { python } from '@codemirror/lang-python';
 
 const languageOptions = {
-  Java: { extension: java, key: 'java' },
-  Python: { extension: python, key: 'python' },
-  'C++': { extension: cpp, key: 'cpp' },
-  C: { extension: cpp, key: 'cpp' },
+  Java: { extension: java, key: 'java', judge0_id: 62 },
+  Python: { extension: python, key: 'python', judge0_id: 71 },
+  cpp: { extension: cpp, key: 'cpp', judge0_id: 54 },
+  C: { extension: cpp, key: 'c', judge0_id: 50},
 };
 
 export default function Editor() {
@@ -81,10 +81,12 @@ export default function Editor() {
 
   const saveToLocalStorage = (lang, val) => {
     const key = `problem-${id}-starterCode`;
-    const existing = JSON.parse(localStorage.getItem(key)) || {};
-    existing[lang.toLowerCase()] = val;
-    localStorage.setItem(key, JSON.stringify(existing));
+    const existing = JSON.parse(localStorage.getItem(key)) || [];
+    const updatedList = [...existing.filter(item => item.language !== lang), { language: lang, code: val }];
+
+    localStorage.setItem(key, JSON.stringify(updatedList));
   };
+
 
   const formatValue = (val) =>
     typeof val === 'string'
@@ -93,14 +95,6 @@ export default function Editor() {
       ? JSON.stringify(val)
       : String(val);
 
-  const handleRun = () => {
-    setIsRunning(true);
-    setActiveTab('result')
-    setTimeout(() => {
-      setIsRunning(false);
-      setShowResults(true);
-    }, 2000);
-  };
 
   const customBackground = EditorView.theme({
     "&": {
@@ -138,6 +132,33 @@ export default function Editor() {
     setCurrentTestCase(index);
   };
 
+  const handleSubmit = async () => {
+    const handleRun = () => {
+      setIsRunning(true);
+      setActiveTab('result')
+      setTimeout(() => {
+        setIsRunning(false);
+        setShowResults(true);
+      }, 2000);
+    };
+    handleRun()
+    const payload = {
+      source_code: code,
+      language_id: languageOptions[language].judge0_id
+    }
+  
+    const res = await fetch(`http://localhost:5000/problem/${id}/submission`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(payload)
+    });
+    const result = await res.json();
+    console.log(result);
+
+  }
+  
   return (
     <motion.div className="flex flex-col flex-1 min-h-0 h-full w-full">
       {/* Toolbar */}
@@ -147,7 +168,11 @@ export default function Editor() {
           <div className="relative">
             <select
               value={language}
-              onChange={(e) => setLanguage(e.target.value)}
+              onChange={(e) => {setLanguage(e.target.value);
+                setCode(JSON.parse(localStorage.getItem(`problem-${id}-starterCode`)).filter(item => item.language === language).code)
+              }
+
+              }
               className="appearance-none bg-white dark:bg-gray-900 rounded-lg px-4 py-2 pr-8 text-sm font-medium text-gray-900 dark:text-white focus:outline-none"
             >
               {Object.entries(languageOptions).map(([lang]) => (
@@ -240,7 +265,7 @@ export default function Editor() {
             {/* Run/Submit buttons */}
             <div className="flex gap-3 justify-end pr-8">
               <motion.button
-                onClick={handleRun}
+                onClick={handleSubmit}
                 disabled={isRunning}
                 className="flex items-center gap-2 px-4 h-11 bg-gray-600 hover:bg-gray-700 text-white rounded-lg font-medium transition"
                 whileHover={{ scale: isRunning ? 1 : 1.02 }}
@@ -253,6 +278,7 @@ export default function Editor() {
                 className="flex items-center gap-2 px-4 h-11 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
+                onClick={handleSubmit}
               >
                 <Send className="w-3 h-3" />
                 Submit

@@ -1,17 +1,23 @@
+# Environment variables
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
 # Python bytecode
 __pycache__/
 *.py[cod]
-
-# Environment variables
-.env
-
-# Flask instance folder
-instance/
+*$py.class
 
 # Virtual environment
 venv/
 ENV/
 env/
+.venv/
+
+# Flask instance folder
+instance/
 
 # OS-specific files
 .DS_Store
@@ -20,3 +26,10 @@ Thumbs.db
 # Editor folders
 .vscode/
 .idea/
+
+# Node modules (for frontend)
+node_modules/
+
+# Build outputs
+build/
+dist/

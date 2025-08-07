@@ -15,6 +15,7 @@ from routes.problems import problems_bp
 from routes.ProblemDescription import problem_Description_bp
 from routes.starterCode import starterCode_bp
 from routes.onEditor import onEditor_bp
+from routes.submission import submission_bp
 
 # Flask-Session Configuration
 app.config["SESSION_TYPE"] = "filesystem" 
@@ -36,6 +37,7 @@ app.register_blueprint(problems_bp)
 app.register_blueprint(problem_Description_bp)
 app.register_blueprint(starterCode_bp)
 app.register_blueprint(onEditor_bp)
+app.register_blueprint(submission_bp)
 
 if __name__ == "__main__":
     app.run(debug=True)
