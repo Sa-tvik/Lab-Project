@@ -1,7 +1,7 @@
 # Environment variables
 .env
 backend/.env
-
+sshkey
 # Python
 __pycache__/
 *.py[cod]

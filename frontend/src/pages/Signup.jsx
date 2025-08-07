@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { Code2, Mail, Lock, Eye, EyeOff, User, School, Phone, Calendar, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
-function Signup() {
+export default function Signup() {
   const navigate = useNavigate()
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -377,5 +377,3 @@ function Signup() {
     </div>
   );
 }
-
-export default Signup
