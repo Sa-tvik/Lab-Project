@@ -14,7 +14,7 @@ export default function ProblemList() {
   const fetchProblems = async () => {
     try {
       setError(false);
-      const res = await fetch("http://localhost:5000/problems");
+      const res = await fetch(`${process.env.PUBLIC_BACKEND_URL}/problems`);
       const data = await res.json();
 
       if (!Array.isArray(data)) throw new Error("Invalid data");

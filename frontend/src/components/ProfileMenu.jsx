@@ -20,7 +20,7 @@ export default function ProfileMenu() {
 
     const handleLogout = async () => {
         try {
-            const { error } = await fetch(`http://localhost:5000/logout`);
+            const { error } = await fetch(`${process.env.PUBLIC_BACKEND_URL}/logout`);
             if (error) throw error;
             navigate('/login');
         } catch (err) {

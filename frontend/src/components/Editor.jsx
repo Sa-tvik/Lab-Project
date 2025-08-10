@@ -48,7 +48,7 @@ export default function Editor() {
     } else {
       const fetchStarterCode = async () => {
         try {
-          const res = await fetch(`http://localhost:5000/problem/${id}/starter`);
+          const res = await fetch(`${process.env.PUBLIC_BACKEND_URL}/problem/${id}/starter`);
           const data = await res.json();
           setStarterCode(data);
         } catch (error) {
@@ -60,7 +60,7 @@ export default function Editor() {
 
     const fetchTestCases = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/problem/${id}/Editor`);
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/problem/${id}/Editor`);
         const data = await res.json();
         setTestcases(data);
       } catch (error) {
@@ -138,7 +138,7 @@ export default function Editor() {
     };
 
     try {
-      const res = await fetch(`http://localhost:5000/problem/${id}/submission`, {
+      const res = await fetch(`${process.env.PUBLIC_BACKEND_URL}/problem/${id}/submission`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)

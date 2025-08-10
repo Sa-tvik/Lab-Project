@@ -2,6 +2,7 @@
 .env
 backend/.env
 sshkey
+sshkey.pub
 # Python
 __pycache__/
 *.py[cod]
