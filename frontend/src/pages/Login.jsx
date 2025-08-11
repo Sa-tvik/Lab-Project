@@ -17,6 +17,7 @@ function Login() {
         e.preventDefault();
 
         try {
+            console.log(`${backendUrl}/login`)
             const res = await fetch(`${backendUrl}/login`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
