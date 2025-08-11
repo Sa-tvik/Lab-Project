@@ -8,6 +8,7 @@ export default function Signup() {
   const navigate = useNavigate()
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -36,7 +37,7 @@ export default function Signup() {
     }
 
     try {
-      const res = await fetch(`${process.env.PUBLIC_BACKEND_URL}/signup`, {
+      const res = await fetch(`${backendUrl}/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ 

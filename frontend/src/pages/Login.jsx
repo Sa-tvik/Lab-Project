@@ -10,14 +10,14 @@ function Login() {
     const [role, setRole] = useState("Student")
     const [showPassword, setShowPassword] = useState(false)
     const navigate = useNavigate();
-
+    const backendUrl = import.meta.env.VITE_BACKEND_URL;
     const trimmedEmail = email.trim();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         try {
-            const res = await fetch(`${process.env.PUBLIC_BACKEND_URL}/login`, {
+            const res = await fetch(`${backendUrl}/login`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({email: trimmedEmail, password}),
