@@ -10,11 +10,12 @@ export default function ProblemList() {
   const { problems, setProblems } = useProblemContext();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
+  
   const fetchProblems = async () => {
     try {
       setError(false);
-      const res = await fetch(`${process.env.PUBLIC_BACKEND_URL}/problems`);
+      const res = await fetch(`${backendUrl}/problems`);
       const data = await res.json();
 
       if (!Array.isArray(data)) throw new Error("Invalid data");

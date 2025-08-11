@@ -6,7 +6,7 @@ import os
 
 load_dotenv()
 app = Flask(__name__)
-CORS(app, supports_credentials=True, origins=["https://lab-cad.vercel.app"])
+CORS(app, supports_credentials=True, origins=["http://localhost:5181", "https://lab-cad.vercel.app"])
 app.secret_key = os.getenv("SECRET_KEY") # Secret key for session signing
 
 #  ROUTES
@@ -24,7 +24,7 @@ app.config["SESSION_PERMANENT"] = True
 app.config["PERMANENT_SESSION_LIFETIME"] = 86400  # 1 day in seconds
 app.config["SESSION_USE_SIGNER"] = True
 app.config["SESSION_COOKIE_HTTPONLY"] = True
-app.config["SESSION_COOKIE_SECURE"] = True  # Set to True on HTTPS in production
+app.config["SESSION_COOKIE_SECURE"] = False  # Set to True on HTTPS in production
 os.makedirs(app.config["SESSION_FILE_DIR"], exist_ok=True)
 
 Session(app)
