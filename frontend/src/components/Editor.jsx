@@ -60,7 +60,7 @@ export default function Editor() {
 
     const fetchTestCases = async () => {
       try {
-        const res = await fetch(`${backendUrl}/api/problem/${id}/Editor`);
+        const res = await fetch(`${backendUrl}/problem/${id}/Editor`);
         const text = await res.text();
         console.log('Response text:', text);
         const data = await res.json();
