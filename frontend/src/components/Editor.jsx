@@ -35,7 +35,7 @@ export default function Editor() {
   const [isRunning, setIsRunning] = useState(false);
   const [activeTab, setActiveTab] = useState('testcase');
   const [currentTestCase, setCurrentTestCase] = useState(0);
-  const backendUrl = import.meta.env.VITE_BACKEND_URL;
+  const backendUrl = import.meta.env.VITE_API_URL;
   // Effect to fetch initial problem data (starter code and test cases) from localStorage or API
   useEffect(() => {
     const localCode = localStorage.getItem(`problem-${id}-starterCode`);
@@ -61,8 +61,6 @@ export default function Editor() {
     const fetchTestCases = async () => {
       try {
         const res = await fetch(`${backendUrl}/problem/${id}/Editor`);
-        const text = await res.text();
-        console.log('Response text:', text);
         const data = await res.json();
         setTestcases(data);
       } catch (error) {

@@ -10,14 +10,13 @@ function Login() {
     const [role, setRole] = useState("Student")
     const [showPassword, setShowPassword] = useState(false)
     const navigate = useNavigate();
-    const backendUrl = import.meta.env.VITE_BACKEND_URL;
+    const backendUrl = import.meta.env.VITE_API_URL;
     const trimmedEmail = email.trim();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         try {
-            console.log(`${backendUrl}/login`)
             const res = await fetch(`${backendUrl}/login`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },

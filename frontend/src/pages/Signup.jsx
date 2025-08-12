@@ -8,7 +8,7 @@ export default function Signup() {
   const navigate = useNavigate()
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const backendUrl = import.meta.env.VITE_BACKEND_URL;
+  const backendUrl = import.meta.env.VITE_API_URL;
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
