@@ -10,10 +10,12 @@ function Login() {
     const [role, setRole] = useState("Student")
     const [showPassword, setShowPassword] = useState(false)
     const navigate = useNavigate();
-    const backendUrl = import.meta.env.VITE_API_URL;
+    // const backendUrl = import.meta.env.VITE_API_URL;
+    const { VITE_API_URL } = import.meta.env;
+    const backendUrl = VITE_API_URL;
     const trimmedEmail = email.trim();
 
-    console.log("ENV TEST:", import.meta.env);
+    console.log("ENV TEST:", import.meta.env.VITE_API_URL);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
