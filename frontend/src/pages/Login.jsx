@@ -13,6 +13,8 @@ function Login() {
     const backendUrl = import.meta.env.VITE_API_URL;
     const trimmedEmail = email.trim();
 
+    console.log("ENV TEST:", import.meta.env);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
