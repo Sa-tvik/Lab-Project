@@ -44,46 +44,24 @@ os.makedirs(app.config["SESSION_FILE_DIR"], exist_ok=True)
 
 Session(app)
 
-# Handle preflight requests manually
-@app.before_request
-def handle_preflight():
-    if request.method == "OPTIONS":
-        response = make_response()
-        # Allow specific origins instead of wildcard
-        origin = request.headers.get('Origin')
-        allowed_origins = [
-            "http://localhost:5173",
-            "http://localhost:5174", 
-            "https://lab-cad.vercel.app",
-            "https://www.lab-cad.me",
-            "https://lab-cad.me"
-        ]
-        if origin in allowed_origins:
-            response.headers.add("Access-Control-Allow-Origin", origin)
-        response.headers.add('Access-Control-Allow-Headers', "Content-Type,Authorization,X-Requested-With")
-        response.headers.add('Access-Control-Allow-Methods', "GET,POST,PUT,DELETE,OPTIONS")
-        response.headers.add('Access-Control-Allow-Credentials', "true")
-        return response
+# Define allowed origins as a module-level constant
+ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+    "http://localhost:5174",
+    "https://lab-cad.vercel.app",
+    "https://www.lab-cad.me",
+    "https://lab-cad.me"
+]
+
+# Manual CORS preflight handling removed; Flask-CORS handles CORS automatically.
 
 @app.after_request
 def after_request(response):
     origin = request.headers.get('Origin')
-    allowed_origins = [
-        "http://localhost:5173",
-        "http://localhost:5174", 
-        "https://lab-cad.vercel.app",
-        "https://www.lab-cad.me",
-        "https://lab-cad.me"
-    ]
-    if origin in allowed_origins:
+    if origin in ALLOWED_ORIGINS:
         response.headers.add('Access-Control-Allow-Origin', origin)
         response.headers.add('Access-Control-Allow-Credentials', 'true')
     return response
-
-from routes.auth import auth_bp
-from routes.problems import problems_bp
-from routes.ProblemDescription import problem_Description_bp
-from routes.starterCode import starterCode_bp
 from routes.onEditor import onEditor_bp
 from routes.submission import submission_bp
 
