@@ -55,13 +55,10 @@ ALLOWED_ORIGINS = [
 
 # Manual CORS preflight handling removed; Flask-CORS handles CORS automatically.
 
-@app.after_request
-def after_request(response):
-    origin = request.headers.get('Origin')
-    if origin in ALLOWED_ORIGINS:
-        response.headers.add('Access-Control-Allow-Origin', origin)
-        response.headers.add('Access-Control-Allow-Credentials', 'true')
-    return response
+from routes.auth import auth_bp
+from routes.problems import problems_bp
+from routes.ProblemDescription import problem_Description_bp
+from routes.starterCode import starterCode_bp
 from routes.onEditor import onEditor_bp
 from routes.submission import submission_bp
 
