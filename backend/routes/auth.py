@@ -10,7 +10,7 @@ def set_user_session(user_id, email, role, access_token):
     session["access_token"] = access_token
 
 
-@auth_bp.route('/signup', methods=['POST'])
+@auth_bp.route('/api/signup', methods=['POST'])
 def signup():
     try:
         data = request.get_json()
@@ -86,7 +86,7 @@ def signup():
         return jsonify({"error": "Internal server error", "details": str(e)}), 500
 
 
-@auth_bp.route('/login', methods=['POST'])
+@auth_bp.route('/api/login', methods=['POST'])
 def login():
     try:
         data = request.get_json()
@@ -116,7 +116,14 @@ def login():
         current_app.logger.error(f"Login error: {e}")
         return jsonify({"error": "Internal server error"}), 500
 
-@auth_bp.route('/logout', methods=['POST'])
+@auth_bp.route('/api/logout', methods=['POST'])
 def logout():
     session.clear()
     return jsonify({"message": "Logged out successfully"}), 200
+
+@auth_bp.route('/api/check-auth')
+def check_auth():
+    if 'user_id' in session:
+        return jsonify({"authenticated": True, "user_id": session['user_id']}), 200
+    else:
+        return jsonify({"authenticated": False}), 401

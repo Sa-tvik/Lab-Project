@@ -21,7 +21,7 @@ ALLOWED_LANGUAGES = {
 }
 
 
-@submission_bp.route('/problem/<int:order>/submission', methods=['POST'])
+@submission_bp.route('/api/problem/<int:order>/submission', methods=['POST'])
 def batch_submissions(order):
     """
     Handles code submissions for a given problem. It runs the code against

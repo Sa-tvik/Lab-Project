@@ -3,7 +3,7 @@ from utils.supabase_client import supabase
 
 onEditor_bp  = Blueprint('onEditor_bp', __name__)
 
-@onEditor_bp.route('/problem/<int:order>/Editor', methods=['GET'])
+@onEditor_bp.route('/api/problem/<int:order>/Editor', methods=['GET'])
 def get_testcases(order):
     result = supabase.from_("test_cases").select("order_id","testcase_index","input","expected_output").eq("order_id", order).eq("is_hidden", False).execute()
     print(result.data, flush=True)
