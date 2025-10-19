@@ -7,7 +7,7 @@ export default function ProfileMenu() {
     const [open, setOpen] = useState(false);
     const menuRef = useRef(null);
     const navigate = useNavigate();
-
+    const backendUrl = import.meta.env.VITE_API_URL;
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (menuRef.current && !menuRef.current.contains(event.target)) {
@@ -20,11 +20,18 @@ export default function ProfileMenu() {
 
     const handleLogout = async () => {
         try {
-            const { error } = await fetch(`http://localhost:5000/logout`);
-            if (error) throw error;
+            const res = await fetch(`${backendUrl}/logout`, {
+                method: 'POST',
+                credentials: 'include'
+            });
+            
+            if (!res.ok) {
+                alert('Logout failed');
+            }
+
             navigate('/login');
         } catch (err) {
-            console.error('Logout failed:', err.message);
+            alert('Logout failed:', err.message);
         }
     };
 

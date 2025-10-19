@@ -42,6 +42,7 @@ export default function ProblemDescription() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [activeTab, setActiveTab] = useState('description');
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   useEffect(() => {
     const local = localStorage.getItem(`problem-${id}`);
@@ -56,7 +57,7 @@ export default function ProblemDescription() {
       } else {
         const fetchProblem = async () => {
           try {
-            const res = await fetch(`http://localhost:5000/problems`);
+            const res = await fetch(`${backendUrl}/problems`);
             const data = await res.json();
             if (!Array.isArray(data)) throw new Error("Invalid data");
             setProblems(data);

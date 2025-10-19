@@ -3,7 +3,7 @@ from utils.supabase_client import supabase
 
 starterCode_bp = Blueprint("starterCode_bp", __name__)
 
-@starterCode_bp.route('/problem/<int:order>/starter', methods=['GET'])
+@starterCode_bp.route('/api/problem/<int:order>/starter', methods=['GET'])
 def get_starterCode(order):
     result = supabase.from_("starter_code").select("language","code").eq("order_id", order).execute()
     print(result.data, flush=True)

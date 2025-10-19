@@ -3,7 +3,7 @@ from utils.supabase_client import supabase
 
 problem_Description_bp = Blueprint('problem_description', __name__)
 
-@problem_Description_bp.route("/problem/<int:order>", methods=["GET"])
+@problem_Description_bp.route("/api/problem/<int:order>", methods=["GET"])
 def get_problem_by_order(order):
     try:
         result = supabase.from_("problems").select("*").eq("order_id", order).single().execute()

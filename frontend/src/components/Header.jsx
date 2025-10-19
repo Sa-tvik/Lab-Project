@@ -79,14 +79,14 @@ export default function Header({
           <ProfileMenu/>
         </motion>
 
-        <motion.button
+        {/* <motion.button
           onClick={onSettingsClick}
           className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
           <Settings className="w-4 h-4 text-gray-600 dark:text-gray-400" />
-        </motion.button>
+        </motion.button> */}
       </div>
     </motion.div>
   );

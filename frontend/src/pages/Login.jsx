@@ -4,30 +4,32 @@ import { Link } from 'react-router-dom'
 import { ArrowLeft, Code2, User, School, Mail, Lock, Eye, EyeOff, X } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+
 function Login() {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const [email, setEmail] = useState("dummy.test@muj.manipal.edu");
+    const [password, setPassword] = useState("dummytest@12");
     const [role, setRole] = useState("Student")
     const [showPassword, setShowPassword] = useState(false)
     const navigate = useNavigate();
-
+    const { VITE_API_URL } = import.meta.env;
+    const backendUrl = VITE_API_URL;
     const trimmedEmail = email.trim();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         try {
-            const res = await fetch(`http://localhost:5000/login`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({email: trimmedEmail, password}),
+            const res = await fetch(`${backendUrl}/login`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({email: trimmedEmail, password}),
+                credentials: "include"
             });
-
             const data = await res.json();
-            if (res.ok) {
-                setTimeout(() => {
-                    navigate("/problems"); 
-                }); 
+            if (res.ok && role === "Student") {
+                navigate("/problems"); 
+            }else if(res.ok && role === "Faculty"){
+                navigate("/faculty/dashboard")
             } else {
                 alert(data?.error || "Something went wrong");
             }
@@ -130,6 +132,8 @@ function Login() {
                                         type="email" 
                                         id='email'
                                         name='email'
+                                        autoComplete='username'
+                                        value={email}
                                         onChange={(e) => setEmail(e.target.value)}
                                         className=' w-full pl-10 pr-4 py-3 rounded-lg border border-gray-600 bg-gray-700/50 text-white hover:border-gray-500 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200'
                                         placeholder='Enter your email'
@@ -149,9 +153,11 @@ function Login() {
                                         type={showPassword ? 'text' : 'password'} 
                                         id='password'
                                         name='password'
+                                        autoComplete="current-password"
                                         onChange={(e) => setPassword(e.target.value)}
                                         className=' w-full pl-10 pr-4 py-3 rounded-lg border border-gray-600 bg-gray-700/50 text-white hover:border-gray-500 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200'
                                         placeholder='Enter your password'
+                                        value={password}
                                         required
                                         />
                                         <button

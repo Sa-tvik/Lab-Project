@@ -1,14 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, use } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   ChevronLeft,
-  ChevronRight,
   Maximize2,
   Minimize2,
   Settings,
 } from 'lucide-react';
 import Split from 'react-split';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Timer from '../../components/Timer';
 import Editor from '../../components/Editor';
 import ProblemDescription from '../../components/ProblemDescription';
@@ -34,11 +33,40 @@ const sidebarVariants = {
   }
 };
 
-function Problem() {
+function Problem() { 
   const navigate = useNavigate();
   const [descriptionOpen, setDescriptionOpen] = useState(true);
   const [splitKey, setSplitKey] = useState(0);
+  const { id } = useParams();
+  const [unlocked, setUnlocked] = useState("False");
+  const backendUrl = import.meta.env.VITE_API_URL;
 
+  useEffect(() => {
+    const fetchUnlockStatus = async () => {
+      try{
+        const res = await fetch(`${backendUrl}/checkProblem/${id}`);
+        const data = await res.json();
+        if(res.ok){
+          setUnlocked(data);
+        }else{
+          alert("Problem not found or locked")
+          setUnlocked(false);
+        }
+      }catch(error){
+        console.error("Error", error);
+        setUnlocked(false);
+      }
+    }
+    fetchUnlockStatus();
+  }, [id])
+
+  useEffect(() => {
+    if (unlocked === false) {
+      // redirect locked users
+      alert("This problem is locked by your instructor.");
+      navigate("/problems");
+    }
+  }, [unlocked, navigate]);
 
   useEffect(() => {
     const handleResize = () => setSplitKey((prev) => prev + 1);
@@ -96,13 +124,11 @@ function Problem() {
             {descriptionOpen ? <Minimize2 className="w-4 h-4 text-gray-400" /> : <Maximize2 className="w-4 h-4 text-gray-400" />}
           </motion.button>
 
-          {/* <motion.button className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"> */}
             <ProfileMenu/>
-          {/* </motion.button> */}
 
-          <motion.button className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+          {/* <motion.button className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
             <Settings className="w-4 h-4 text-gray-600 dark:text-gray-400" />
-          </motion.button>
+          </motion.button> */}
         
         </div>
       </motion.div>
@@ -139,7 +165,7 @@ function Problem() {
             layout
             transition={{ type: "spring", stiffness: 300, damping: 40 }}
             >
-            <div className="flex-1 min-h-0 flex flex-col">
+            <div className="flex-1 min-h-0 flex flex-col">           
               <Editor />
             </div>
           </motion.div>

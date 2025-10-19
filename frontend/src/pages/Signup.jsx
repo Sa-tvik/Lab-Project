@@ -4,10 +4,11 @@ import { motion } from 'framer-motion';
 import { Code2, Mail, Lock, Eye, EyeOff, User, School, Phone, Calendar, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
-function Signup() {
+export default function Signup() {
   const navigate = useNavigate()
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const backendUrl = import.meta.env.VITE_API_URL;
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -36,7 +37,7 @@ function Signup() {
     }
 
     try {
-      const res = await fetch("http://localhost:5000/signup", {
+      const res = await fetch(`${backendUrl}/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ 
@@ -377,5 +378,3 @@ function Signup() {
     </div>
   );
 }
-
-export default Signup
