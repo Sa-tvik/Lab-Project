@@ -92,7 +92,7 @@ def login():
         data = request.get_json()
         email = data.get('email')
         password = data.get('password')
-
+        role = data.get('role')
         # Authenticate user
         response = supabase.auth.sign_in_with_password({
             "email": email,
@@ -103,26 +103,44 @@ def login():
             current_app.logger.error(f"Login failed: {response}")
             return jsonify({"error": "Invalid email or password"}), 401
 
-        if not response.user.confirmed_at:
-            return jsonify({"error": "Please confirm your email before logging in."}), 403
+        user_data = supabase.table("users").select("role").eq("email", email).single().execute()
 
-        # Store token and user ID in session
-        session['access_token'] = response.session.access_token
-        session['user_id'] = response.user.id
+        if not user_data.data:
+            return jsonify({"error": "Role not found in database"}), 404
+        
+        actual_role = user_data.data.get("role")
+        if actual_role.lower() == "student" and actual_role.lower() != role.lower():
+            return jsonify({"error": f"Incorrect role selected. You are a '{actual_role}'."}), 403
+        
+        # Save session data safely (response.session may be None)
+        session_data = getattr(response, "session", None)
+        access_token = getattr(session_data, "access_token", None)
 
-        return jsonify({"message": "Login successful"}), 200
+        # Use helper to set session keys (or set them directly)
+        set_user_session(response.user.id, response.user.email, actual_role, access_token)
+        session.permanent = True  # persist across reloads
+        print("Session after login:", dict(session))
+        print("Login request Origin:", request.headers.get("Origin"))
+
+        return jsonify({
+            "message": "Login successful",
+            "user": {"id": response.user.id, "email": response.user.email, "role": actual_role}
+        }), 200
 
     except Exception as e:
-        current_app.logger.error(f"Login error: {e}")
-        return jsonify({"error": "Internal server error"}), 500
+        return jsonify({"error": "Internal server error", "details": str(e)}), 500
+
 
 @auth_bp.route('/api/logout', methods=['POST'])
 def logout():
     session.clear()
     return jsonify({"message": "Logged out successfully"}), 200
 
+
 @auth_bp.route('/api/check-auth')
 def check_auth():
+    print("Session content:", dict(session))
+
     if 'user_id' in session:
         return jsonify({
             "authenticated": True,
@@ -132,4 +150,3 @@ def check_auth():
         }), 200
     else:
         return jsonify({"authenticated": False}), 401
-

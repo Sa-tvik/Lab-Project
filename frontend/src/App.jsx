@@ -1,28 +1,59 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from './context/ThemeContext';
+import { AuthProvider, PrivateRoute, RoleProtectedRoute } from './context/AuthContext';
+import LandingPage from './pages/LandingPage';
 import ProblemList from './pages/student/ProblemList';
 import Problem from './pages/student/Problem';
-import Signup from './pages/Signup';  
+import Signup from './pages/Signup';
 import Login from './pages/Login';
-import LandingPage from './pages/LandingPage';
 import Dashboard from './pages/Faculty/Dashboard';
 
 function App() {
   return (
     <ThemeProvider>
-      <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+      <AuthProvider>
         <Routes>
           {/* Public Routes */}
           <Route path="/" element={<LandingPage />} />
-          <Route path="/problems" element={<ProblemList />} />
-          <Route path="/problem/:id" element={<Problem />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/faculty/dashboard" element={<Dashboard />} />
-    
+          {/* Protected Student Routes */}
+          <Route
+            path="/problems"
+            element={
+              <PrivateRoute>
+                <ProblemList />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/problem/:id"
+            element={
+              <PrivateRoute>
+                <Problem />
+              </PrivateRoute>
+            }
+          />
+          {/* Protected Faculty Route */}
+          <Route
+            path="/faculty/dashboard"
+            element={
+              <PrivateRoute>
+                <Dashboard />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/faculty/dashboard"
+            element={
+              <RoleProtectedRoute allowedRoles={['faculty']}>
+                <Dashboard />
+              </RoleProtectedRoute>
+            }
+          />
         </Routes>
-      </BrowserRouter>
+      </AuthProvider>
     </ThemeProvider>
   );
 }

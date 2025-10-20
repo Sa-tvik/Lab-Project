@@ -1,13 +1,16 @@
-import { StrictMode } from 'react';
-import { createRoot } from 'react-dom/client';
-import App from './App.jsx';
-import { ProblemProvider } from './context/ProblemContext.jsx';
-import './index.css';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App";
+import "./index.css";
+import { BrowserRouter } from "react-router-dom";
+import { ProblemProvider } from "./context/ProblemContext";
 
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <ProblemProvider>
-      <App />
-    </ProblemProvider>
-  </StrictMode>
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <React.StrictMode>
+    <BrowserRouter>
+      <ProblemProvider>
+        <App />
+      </ProblemProvider>
+    </BrowserRouter>
+  </React.StrictMode>
 );
