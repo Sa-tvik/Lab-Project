@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  Play,
+  RotateCcw,
   Send,
   ChevronDown,
   CheckCircle2,
@@ -152,7 +152,7 @@ export default function Editor() {
       if (result.results) {
       // Sort by testcase_index to match order
         const sortedResults = result.results.sort((a, b) => a.testcase_index - b.testcase_index);
-        console.log(sortedResults);
+        // console.log(sortedResults);
         if(sortedResults[0]["status_id"]!=3){
           setSubmissionError(sortedResults[0]["status_id"])
         }
@@ -160,6 +160,7 @@ export default function Editor() {
       }
 
     } catch (error) {
+      setSubmissionError(13)
       console.error("Submission failed:", error);
     } finally {
       setIsRunning(false);
@@ -167,40 +168,60 @@ export default function Editor() {
     }
   };
 
+  const refreshStarterCode = () => {
+    const refreshStarterCode = async () => {
+        try {
+          const res = await fetch(`${backendUrl}/problem/${id}/starter`);
+          const data = await res.json();
+          setStarterCode(data);
+        } catch (error) {
+          console.error("Failed to fetch starter code from API:", error);
+        }
+      };
+      refreshStarterCode();
+  }
+
   return (
     <motion.div className="flex flex-col flex-1 min-h-0 h-full w-full">
       {/* Toolbar */}
-      <div className="flex items-center justify-between p-3 rounded-t-lg border-b dark:border-gray-600 bg-gray-50 dark:bg-gray-800">
-        <div className="flex items-center gap-4">
-          {/* Language Selector */}
-          <div className="relative">
-            <select
-              value={language}
-              onChange={(e) => setLanguage(e.target.value)}
-              className="appearance-none bg-white dark:bg-gray-900 rounded-lg px-4 py-2 pr-8 text-sm font-medium text-gray-900 dark:text-white focus:outline-none"
-            >
-              {Object.keys(languageOptions).map((lang) => (
-                <option key={lang} value={lang}>
-                  {lang}
-                </option>
-              ))}
-            </select>
-            <ChevronDown className="w-4 h-4 absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
-          </div>
+      <div className="p-3 rounded-t-lg border-b dark:border-gray-600 bg-gray-50 dark:bg-gray-800">
+        <div className='flex items-center justify-between'>
+          <div className="flex items-center gap-4">
+            {/* Language Selector */}
+            <div className="relative">
+              <select
+                value={language}
+                onChange={(e) => setLanguage(e.target.value)}
+                className="appearance-none bg-white dark:bg-gray-900 rounded-lg px-4 py-2 pr-8 text-sm font-medium text-gray-900 dark:text-white focus:outline-none"
+              >
+                {Object.keys(languageOptions).map((lang) => (
+                  <option key={lang} value={lang}>
+                    {lang}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown className="w-4 h-4 absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+            </div>
 
-          {/* Font size */}
-          <div className="relative">
-            <select
-              value={fontSize}
-              onChange={(e) => setFontSize(e.target.value)}
-              className="appearance-none bg-white dark:bg-gray-900 rounded-lg px-3 py-2 pr-8 text-sm text-gray-900 dark:text-white focus:outline-none"
-            >
-              <option>14px</option>
-              <option>16px</option>
-              <option>18px</option>
-            </select>
-            <ChevronDown className="w-4 h-4 absolute right-1 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+            {/* Font size */}
+            <div className="relative">
+              <select
+                value={fontSize}
+                onChange={(e) => setFontSize(e.target.value)}
+                className="appearance-none bg-white dark:bg-gray-900 rounded-lg px-3 py-2 pr-8 text-sm text-gray-900 dark:text-white focus:outline-none"
+              >
+                <option>14px</option>
+                <option>16px</option>
+                <option>18px</option>
+              </select>
+              <ChevronDown className="w-4 h-4 absolute right-1 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+            </div>
           </div>
+          <button 
+          className='flex items-center pr-3'
+          onClick={(e) => refreshStarterCode()}>
+            <RotateCcw className='text-white'/>
+          </button>
         </div>
       </div>
 

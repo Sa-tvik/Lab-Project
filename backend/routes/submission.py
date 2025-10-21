@@ -69,7 +69,7 @@ def batch_submissions(order):
                 f"{JUDGE0_BASE_URL}/submissions/batch?base64_encoded=false",
                 headers=HEADERS,
                 json=submissions_payload,
-                timeout=8  # seconds for the create call
+                timeout=20  # seconds for the create call
             )
         except requests.RequestException as e:
             return jsonify({"error": "Failed to reach Judge0", "details": str(e)}), 502
@@ -82,15 +82,15 @@ def batch_submissions(order):
 
         # Poll with fewer iterations and shorter sleep; set timeouts on each request
         final_results = {}
-        max_polls = 8
-        poll_sleep = 1.0
+        max_polls = 15
+        poll_sleep = 2.0
         for _ in range(max_polls):
             try:
                 result_response = requests.get(
                     f"{JUDGE0_BASE_URL}/submissions/batch",
                     params={"tokens": tokens_query, "base64_encoded": "false", "fields": "stdout,stderr,status_id,token,compile_output"},
                     headers=HEADERS,
-                    timeout=8
+                    timeout=20
                 )
             except requests.RequestException as e:
                 return jsonify({"error": "Failed to poll results from Judge0", "details": str(e)}), 502

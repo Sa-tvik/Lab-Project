@@ -180,9 +180,7 @@ export default function TestPanel({
                           </div>
                           <div>
                             <span className="font-semibold">Actual output:</span>
-                            {/* <span className={submissionResults[currentTestCase].passed ? "text-green-600" : "text-red-600"}>
-                              {submissionResults[currentTestCase].actual_output}
-                            </span> */}
+                            <span className={submissionResults[currentTestCase].passed ? "text-green-600" : "text-red-600"}> {submissionResults[currentTestCase].actual_output}</span>
                           </div>
                         </div>
                       </div>

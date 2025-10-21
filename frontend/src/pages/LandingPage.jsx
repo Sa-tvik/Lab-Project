@@ -15,7 +15,6 @@ export default function LandingPage() {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <Link to="/problems">
           <div className="relative">
             <Code2 className="w-8 h-8 text-blue-400" />
             <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
@@ -23,7 +22,6 @@ export default function LandingPage() {
           <span className="text-xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
             LabCAD
           </span>
-          </Link>
         </motion.div>
         
         <motion.div 

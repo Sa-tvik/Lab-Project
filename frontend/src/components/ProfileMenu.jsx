@@ -28,7 +28,7 @@ export default function ProfileMenu() {
             if (!res.ok) {
                 alert('Logout failed');
             }
-
+            localStorage.clear();
             navigate('/login');
         } catch (err) {
             alert('Logout failed:', err.message);

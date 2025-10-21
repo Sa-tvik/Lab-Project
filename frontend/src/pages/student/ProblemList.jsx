@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useProblemContext } from '../../context/ProblemContext';
 import Header from '../../components/Header';
-import { CheckCircle2, Circle } from 'lucide-react';
+import { Lock, LockOpen } from 'lucide-react';
 
 export default function ProblemList() {
   const navigate = useNavigate();
@@ -63,8 +63,8 @@ export default function ProblemList() {
           {/* Table Header */}
           <div className="px-6 py-4 bg-gray-50 dark:bg-gray-700/50 border-b border-gray-200 dark:border-gray-700">
             <div className="grid grid-cols-12 gap-4 text-sm font-medium text-gray-600 dark:text-gray-300">
-              <div className="col-span-1">Status</div>
               <div className="col-span-11">Title & Tags</div>
+              <div className="col-span-1">Status</div>
             </div>
           </div>
 
@@ -105,13 +105,6 @@ export default function ProblemList() {
                   transition={{ delay: index * 0.05 }}
                 >
                   <div className="grid grid-cols-12 gap-4 items-center">
-                    <div className="col-span-1">
-                      {problem.completed ? (
-                        <CheckCircle2 className="w-5 h-5 text-green-500" />
-                      ) : (
-                        <Circle className="w-5 h-5 text-gray-300 dark:text-gray-600" />
-                      )}
-                    </div>
                     <div className="col-span-11">
                       <div className="flex items-center gap-3">
                         <span className="text-sm text-gray-500 dark:text-gray-400 font-mono">
@@ -133,6 +126,13 @@ export default function ProblemList() {
                           </div>
                         </div>
                       </div>
+                    </div>
+                    <div className="col-span-1">
+                      {problem.is_unlocked ? (
+                        <LockOpen className="w-5 h-5 text-green-500" />
+                      ) : (
+                        <Lock className="w-5 h-5 text-red-500" />
+                      )}
                     </div>
                   </div>
                 </motion.div>
